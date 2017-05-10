@@ -1,0 +1,92 @@
+//移动端屏幕适配
+@media screen and (max-width: 239px) {
+    html {
+        font-size:12px
+    }
+}
+@media screen and (min-width: 240px) {
+    html {
+        font-size:12px
+    }
+}
+@media screen and (min-width: 320px) {
+    html {
+        font-size:16px
+    }
+}
+
+@media screen and (min-width: 360px) {
+    html {
+        font-size:18px
+    }
+}
+
+@media screen and (min-width: 375px) {
+    html {
+        font-size:18.75px
+    }
+}
+
+@media screen and (min-width: 400px) {
+    html {
+        font-size:20px
+    }
+}
+
+@media screen and (min-width: 480px) {
+    html {
+        font-size:24px
+    }
+}
+
+@media screen and (min-width: 540px) {
+    html {
+        font-size:27px
+    }
+}
+
+@media screen and (min-width: 640px) {
+    html {
+        font-size:32px
+    }
+}
+
+@media screen and (min-width: 750px) {
+    html {
+        font-size:37.5px
+    }
+}
+
+
+body,html{
+    margin: 0;
+    padding: 0;
+}
+.center-box{
+    display: flex;
+    justify-content: center; /* 水平居中 */
+    align-items: center; /*垂直居中*/
+}
+ul,ol,li {
+    list-style: none
+}
+
+a {
+    text-decoration: none;
+    background-color: transparent;
+}
+
+//多行文本省略
+.multi-line-ellipsis(@line) {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: @line;
+    -webkit-box-orient: vertical;
+    word-break:break-all;
+}
+.hidden{
+    display: none;
+}
+button:focus,input:focus,a:focus,a:active,a:hover,textarea:focus {
+    outline: 0;
+}
