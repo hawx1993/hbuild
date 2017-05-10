@@ -1,0 +1,49 @@
+{
+    "prompts":{
+        "name":{
+            "type": "string",
+            "required": true,
+            "message": "Your Project Name"
+        },
+        "project": {
+            "type": "list",
+            "message": "Choose Your Project Type",
+            "choices": ["h5","vue","react"]
+        },
+        "vue": {
+            "when": "project=='vue'",
+            "type": "checkbox",
+            "message": "Choose Your Vue Tech Stack(Select by space)",
+            "choices": ["Vue-Router","Vuex"]
+        },
+        "description":{
+            "type": "string",
+            "required": false,
+            "message": "Project description",
+            "default": "My Personal  project build by hbuild"
+        },
+        "author":{
+            "type": "string",
+            "message": "Author"
+        },
+        "esLint":{
+            "type": "confirm",
+            "message": "Dou you want to enable ESLint?",
+            "default": false
+        },
+        "preProcessor": {
+            "type": "list",
+            "message": "Choose CSS Pre-Processor",
+            "choices": ["LESS","SASS"]
+        }
+    },
+    "filters": {
+        "src/index/*.js": "project == 'h5'",
+        "src/lib/zepto/*.js": "project == 'h5'",
+        "src/components/index/": "project == 'vue'",
+        "src/components/router/": "vue == 'Vue-Router'",
+        "src/common/css/*.less": "preProcessor == 'LESS'",
+        ".eslintrc": "esLint"
+    },
+    "completeMessage":"To get started:\n\n  cd   {{destDirName}}\n  sudo   yarn\n  npm run dev"
+}

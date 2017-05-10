@@ -1,0 +1,25 @@
+{
+  "name": "hbuild",
+  "version": "1.0.0",
+  "description": "rapid build  project starter kit",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hawx1993/hbuild.git"
+  },
+  "keywords": [
+    "hbuild"
+  ],
+  "author": "trigkit4",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hawx1993/hbuild/issues"
+  },
+  "homepage": "https://github.com/hawx1993/hbuild#readme"
+}
