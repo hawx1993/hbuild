@@ -14,7 +14,8 @@
             "when": "project=='vue'",
             "type": "checkbox",
             "message": "Choose Your Vue Tech Stack(Select by space)",
-            "choices": ["Vue-Router","Vuex"]
+            "choices": ["Vue-Router","Vuex"],
+            "default": "Vue-Router"
         },
         "description":{
             "type": "string",
@@ -28,20 +29,25 @@
         },
         "esLint":{
             "type": "confirm",
-            "message": "Dou you want to enable ESLint?",
+            "message": "Do you want to enable ESLint?",
             "default": false
         },
         "preProcessor": {
             "type": "list",
-            "message": "Choose CSS Pre-Processor",
+            "message": "Choose CSS Pre-Processor?",
             "choices": ["LESS","SASS"]
+        },
+        "useZepto": {
+            "type": "confirm",
+            "message": "Do you want to use zepto?",
+            "default": true
         }
     },
     "filters": {
         "src/index/*.js": "project == 'h5'",
         "src/lib/zepto/*.js": "project == 'h5'",
-        "src/components/index/": "project == 'vue'",
-        "src/components/router/": "vue == 'Vue-Router'",
+        "src/components/index/*.vue": "project == 'vue'",
+        "src/components/router/*.js": "project == 'vue' && vue == 'Vue-Router'",
         "src/common/css/*.less": "preProcessor == 'LESS'",
         ".eslintrc": "esLint"
     },
