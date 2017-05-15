@@ -57,14 +57,8 @@ module.exports = {
                 test: /\.jsx?$/,
                 exclude: /(node_modules|bower_components)/,
                 include: resolve('src'),
-                use: {
-                    loader: 'babel-loader',
-                    {{#if_eq project 'react'}}
-                    loaders: ['babel-loader','react-hot'],{{/if_eq}}
-                    options: {
-                        plugins: ['transform-runtime']
-                    }
-                }
+                loader: 'babel-loader?cacheDirectory'{{#if_eq project 'react'}},
+                loaders: ['babel-loader?cacheDirectory','react-hot']{{/if_eq}}
             },
             {{#if_eq preProcessor 'LESS'}}
             {

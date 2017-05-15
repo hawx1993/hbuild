@@ -5,17 +5,6 @@
             "required": true,
             "message": "Your Project Name"
         },
-        "project": {
-            "type": "list",
-            "message": "Choose Your Project Type",
-            "choices": ["h5","vue","react"]
-        },
-        "vuex": {
-            "when": "project=='vue'",
-            "type": "confirm",
-            "message": "Use vuex in Your project?",
-            "default": "false"
-        },
         "description":{
             "type": "string",
             "required": false,
@@ -26,9 +15,15 @@
             "type": "string",
             "message": "Author"
         },
-        "esLint":{
+        "project": {
+            "type": "list",
+            "message": "Choose Your Project Type",
+            "choices": ["h5","vue","react"]
+        },
+        "vuex": {
+            "when": "project=='vue'",
             "type": "confirm",
-            "message": "Do you want to enable ESLint?",
+            "message": "Use vuex in Your project?",
             "default": false
         },
         "preProcessor": {
@@ -38,7 +33,12 @@
         },
         "useZepto": {
             "type": "confirm",
-            "message": "Do you want to use zepto?",
+            "message": "Use zepto in your project?",
+            "default": true
+        },
+        "esLint":{
+            "type": "confirm",
+            "message": "Enable ESLint to lint your code?",
             "default": true
         }
     },
@@ -50,6 +50,9 @@
         "src/components/counter/*.vue": "project == 'vue' && vuex",
         "src/components/store/*.js": "project == 'vue' && vuex",
         "src/common/css/*.less": "preProcessor == 'LESS'",
+        "src/pages/index/*.less": "preProcessor == 'LESS' && project == 'h5'",
+        "src/pages/index/*.scss": "preProcessor == 'SASS' && project == 'h5'",
+        "src/common/css/*.scss": "preProcessor == 'SASS'",
         ".eslintrc": "esLint"
     },
     "completeMessage":"To get started:\n\n  cd   {{destDirName}}\n  npm i || yarn\n  npm run dev"

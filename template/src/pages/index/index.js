@@ -2,8 +2,14 @@
  * Created by trigkit4 on 2017/5/11.
  */
 {{#if_eq project 'h5'}}
+{{#if_eq preProcessor 'LESS'}}
 import '../../common/css/common.less';
 import './index.less';
+{{/if_eq}}
+{{#if_eq preProcessor 'SASS'}}
+import '../../common/css/common.scss';
+import './index.scss';
+{{/if_eq}}
 import mainTpl from './tpl/main.tpl.html'
 
 class Index {

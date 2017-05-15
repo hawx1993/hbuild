@@ -148,7 +148,7 @@ gulp.task("webpack", function() {
                 tempDir: 'node_modules/.cache/happypack_cache',
                 cache: true,
                 threadPool: happyThreadPool,
-                loaders: ['babel-loader?cacheDirectory=node_modules/.cache/babel_cache']
+                loaders: ['babel-loader']
             })
         );
     }

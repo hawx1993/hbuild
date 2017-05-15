@@ -12,7 +12,8 @@
         "dev-pre": "gulp dev --dev-pre",
         "daily": "gulp daily --daily",
         "pre": "gulp pre --pre",
-        "prod": "gulp prod --prod"
+        "prod": "gulp prod --prod"{{#esLint}},
+        "lint": "xo **/src/**/*.{vue,js} !node_modules/**"{{/esLint}}
     },
     "xo": {
         "extends": "./.eslintrc",
@@ -39,12 +40,9 @@
     "dependencies": {
         "babel-plugin-transform-runtime": "^6.23.0",
         "babel-preset-es2015": "^6.24.1",
-        "ejs-template-loader": "^2.0.0",
-        {{#if_eq project 'vue'}}
+        "ejs-template-loader": "^2.0.0"{{#if_eq project 'vue'}},
         "vue": "^2.3.3",
-        "vue-template-compiler": "^2.3.3",
-        {{/if_eq}}
-        {{#vuex}}
+        "vue-template-compiler": "^2.3.3"{{/if_eq}}{{#vuex}},
         "vuex": "^2.3.1"{{/vuex}}
     },
     "devDependencies": {
