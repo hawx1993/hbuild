@@ -10,12 +10,11 @@
             "message": "Choose Your Project Type",
             "choices": ["h5","vue","react"]
         },
-        "vue": {
+        "vuex": {
             "when": "project=='vue'",
-            "type": "checkbox",
-            "message": "Choose Your Vue Tech Stack(Select by space)",
-            "choices": ["Vue-Router","Vuex"],
-            "default": "Vue-Router"
+            "type": "confirm",
+            "message": "Use vuex in Your project?",
+            "default": "false"
         },
         "description":{
             "type": "string",
@@ -44,12 +43,14 @@
         }
     },
     "filters": {
-        "src/index/*.js": "project == 'h5'",
         "src/lib/zepto/*.js": "project == 'h5'",
+        "src/pages/index/tpl/*.html": "project == 'h5'",
         "src/components/index/*.vue": "project == 'vue'",
-        "src/components/router/*.js": "project == 'vue' && vue == 'Vue-Router'",
+        "src/components/router/*.js": "project == 'vue'",
+        "src/components/counter/*.vue": "project == 'vue' && vuex",
+        "src/components/store/*.js": "project == 'vue' && vuex",
         "src/common/css/*.less": "preProcessor == 'LESS'",
         ".eslintrc": "esLint"
     },
-    "completeMessage":"To get started:\n\n  cd   {{destDirName}}\n  sudo   yarn\n  npm run dev"
+    "completeMessage":"To get started:\n\n  cd   {{destDirName}}\n  npm i || yarn\n  npm run dev"
 }

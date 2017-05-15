@@ -7,7 +7,6 @@ var express = require('express');
 var webpack = require('webpack');
 var config = require('./hbuild.config');
 var autoprefixer = require('autoprefixer');
-var StringReplacePlugin = require('string-replace-webpack-plugin');
 
 function resolve (dir) {
     return path.join(__dirname,  dir)
@@ -37,7 +36,9 @@ module.exports = {
         alias: {
             '@': resolve('src'),
             'components': resolve('src/components'),
-            'lib': resolve('src/lib')
+            'lib': resolve('src/lib'),
+            'Vue': 'vue/dist/vue.js',
+            'vue$': 'vue/dist/vue.common.js'//防止出现运行时构建问题
         }
     },
     module: {
@@ -47,11 +48,21 @@ module.exports = {
                 test: /\.vue$/,
                 loader: 'vue-loader',
                 include: resolve('src'),
-                exclude: /node_modules/
+                exclude: /node_modules/,
+                options: {
+                    postcss: autoprefixer
+                }
             },{{/if_eq}}
             {
                 test: /\.jsx?$/,
-                loader: 'babel-loader',
+                exclude: /(node_modules|bower_components)/,
+                include: resolve('src'),
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        plugins: ['transform-runtime']
+                    }
+                }
             },
             {
                 test: /\.less$/,
@@ -72,7 +83,7 @@ module.exports = {
                 use: 'json-loader'
             },
             {
-                test: /\.(png|jpg|jpeg|gif|woff|svg|eot|ttf)\??.*$/,
+                test: /\.(png|jpe?g|gif|woff|svg|eot|ttf)\??.*$/,
                 loader: 'url-loader?limit=100&name=[name].[ext]',
                 exclude: /^node_modules$/
             }

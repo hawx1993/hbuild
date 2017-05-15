@@ -1,20 +1,31 @@
 <template>
-    <div>
-        <p>hello,hbuild!</p>
+    <div class="page">
+        <p>\{{ msg }}</p>
+        {{#vuex}}
+        <counter></counter>
+        {{/vuex}}
     </div>
 </template>
-<style>
-
+{{#if_eq preProcessor 'SASS'}}
+<style lang="scss" scoped>
+{{/if_eq}}
+{{#if_eq preProcessor 'LESS'}}
+<style lang="less" scoped>
+{{/if_eq}}
 </style>
-<script type="text/ecmascript-6">
+<script>
+    {{#vuex}}
+    import Counter from 'components/counter/index'
 
     export default {
         data(){
-            return {}
+            return {
+                msg: 'hello,hbuild'
+            }
         },
-        mounted(){
-
-        },
-        components: {}
+        components: {
+            Counter
+        }
     }
+    {{/vuex}}
 </script>
