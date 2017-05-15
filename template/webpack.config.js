@@ -50,7 +50,7 @@ module.exports = {
                 include: resolve('src'),
                 exclude: /node_modules/,
                 options: {
-                    postcss: autoprefixer
+                    postcss: [autoprefixer()]
                 }
             },{{/if_eq}}
             {
@@ -59,11 +59,14 @@ module.exports = {
                 include: resolve('src'),
                 use: {
                     loader: 'babel-loader',
+                    {{#if_eq project 'react'}}
+                    loaders: ['babel-loader','react-hot'],{{/if_eq}}
                     options: {
                         plugins: ['transform-runtime']
                     }
                 }
             },
+            {{#if_eq preProcessor 'LESS'}}
             {
                 test: /\.less$/,
                 use: [{
@@ -73,7 +76,18 @@ module.exports = {
                 }, {
                     loader: "less-loader" // 将LESS编译成CSS
                 }]
-            },
+            },{{/if_eq}}
+            {{#if_eq preProcessor 'SASS'}}
+            {
+                test: /\.scss$/,
+                    use: [{
+                    loader: "style-loader" // 将 JS 字符串生成为 style 节点
+                },  {
+                    loader: "css-loader" // 将 CSS 转化成 CommonJS 模块
+                },  {
+                    loader: "sass-loader" // 将 Sass 编译成 CSS
+                }]
+            },{{/if_eq}}
             {
                 test: /\.html$/,
                 loader: "ejs-template-loader"
