@@ -12,11 +12,13 @@
 - ES6
 - LESS
 - React
-- jsx
 - zepto for h5
 - autoprefixer
 - mock server
     
+### Document
+
+[中文文档]('./docs/start.md')
     
 ### Get Started
     

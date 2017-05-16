@@ -9,7 +9,7 @@
             "type": "string",
             "required": false,
             "message": "Project description",
-            "default": "My Personal  project build by hbuild"
+            "default": "build  project starter kit rapidly by Hbuild"
         },
         "author":{
             "type": "string",
@@ -31,11 +31,6 @@
             "message": "Choose CSS Pre-Processor?",
             "choices": ["LESS","SASS"]
         },
-        "useZepto": {
-            "type": "confirm",
-            "message": "Use zepto in your project?",
-            "default": true
-        },
         "esLint":{
             "type": "confirm",
             "message": "Enable ESLint to lint your code?",
@@ -43,7 +38,6 @@
         }
     },
     "filters": {
-        "src/lib/zepto/*.js": "project == 'h5'",
         "src/pages/index/module/*.html": "project == 'h5'",
         "src/components/index/*.vue": "project == 'vue'",
         "src/components/router/*.js": "project == 'vue'",
