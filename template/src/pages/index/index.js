@@ -10,7 +10,7 @@ import './index.less';
 import '../../common/css/common.scss';
 import './index.scss';
 {{/if_eq}}
-import mainTpl from './tpl/main.tpl.html'
+import mainTpl from './module/main.tpl.html'
 
 class Index {
     constructor() {

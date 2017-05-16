@@ -1,3 +1,10 @@
 {
+    "plugins": ["transform-runtime"],
+    {{#if_eq project 'react'}}
+    "presets": [
+        "es2015", "stage-0","react"
+    ]
+    {{else}}
     "presets": ["es2015"]
+    {{/if_eq}}
 }

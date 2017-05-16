@@ -20,7 +20,11 @@ entryFilesArray.forEach(function(file){
     if(state.isDirectory(file)){
         var dirname = path.basename(file);
         entryFiles[dirname+'/index'] = [
+            {{#if_eq project 'react'}}
+            resolve('src/pages/'+ dirname + '/index.jsx')
+            {{else}}
             resolve('src/pages/'+ dirname + '/index.js')
+            {{/if_eq}}
         ]
     }
 });
@@ -57,8 +61,7 @@ module.exports = {
                 test: /\.jsx?$/,
                 exclude: /(node_modules|bower_components)/,
                 include: resolve('src'),
-                loader: 'babel-loader?cacheDirectory'{{#if_eq project 'react'}},
-                loaders: ['babel-loader?cacheDirectory','react-hot']{{/if_eq}}
+                loader: 'babel-loader?cacheDirectory'
             },
             {{#if_eq preProcessor 'LESS'}}
             {
@@ -108,6 +111,11 @@ module.exports = {
         new webpack.ProvidePlugin({
             $: 'zepto-webpack'
         }),{{/useZepto}}
+        new webpack.DefinePlugin({
+            "process.env": {
+                NODE_ENV: JSON.stringify("production")
+            }
+        }),
         new webpack.optimize.CommonsChunkPlugin('common')
     ]
-};
+}

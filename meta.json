@@ -44,7 +44,7 @@
     },
     "filters": {
         "src/lib/zepto/*.js": "project == 'h5'",
-        "src/pages/index/tpl/*.html": "project == 'h5'",
+        "src/pages/index/module/*.html": "project == 'h5'",
         "src/components/index/*.vue": "project == 'vue'",
         "src/components/router/*.js": "project == 'vue'",
         "src/components/counter/*.vue": "project == 'vue' && vuex",
@@ -53,6 +53,9 @@
         "src/pages/index/*.less": "preProcessor == 'LESS' && project == 'h5'",
         "src/pages/index/*.scss": "preProcessor == 'SASS' && project == 'h5'",
         "src/common/css/*.scss": "preProcessor == 'SASS'",
+        "src/pages/index/*.jsx": "project == 'react' ",
+        "src/pages/index/*.js": "project !=='react'",
+        "src/pages/index/module/*.jsx": "project == 'react'",
         ".eslintrc": "esLint"
     },
     "completeMessage":"To get started:\n\n  cd   {{destDirName}}\n  npm i || yarn\n  npm run dev"

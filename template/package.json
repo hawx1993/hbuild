@@ -1,8 +1,8 @@
 {
-    "name": "hbuild",
+    "name": "{{ name }}",
     "version": "1.0.0",
     "description": "repaid build h5/vue/react project starter kit",
-    "main": "gulpfile.babel.js",
+    "main": "gulpfile.js",
     "directories": {
         "doc": "docs"
     },
@@ -38,9 +38,7 @@
     },
     "homepage": "https://github.com/hawx1993/hbuild#readme",
     "dependencies": {
-        "babel-plugin-transform-runtime": "^6.23.0",
-        "babel-preset-es2015": "^6.24.1",
-        "ejs-template-loader": "^2.0.0"{{#if_eq project 'vue'}},
+        {{#if_eq project 'vue'}},
         "vue": "^2.3.3",
         "vue-template-compiler": "^2.3.3"{{/if_eq}}{{#vuex}},
         "vuex": "^2.3.1"{{/vuex}}
@@ -49,9 +47,13 @@
         "autoprefixer": "^7.0.1",
         "babel-core": "^6.24.1",
         "babel-loader": "^7.0.0",
-        "babel-preset-env": "^1.4.0",
+        "babel-plugin-transform-runtime": "^6.23.0",
+        "babel-preset-es2015": "^6.24.1",{{#if_eq project 'react'}}
+        "babel-preset-react": "^6.24.1",
+        "babel-preset-stage-0": "^6.24.1",{{/if_eq}}
         "css-loader": "^0.28.1",
         "del": "^2.2.2",
+        "ejs-template-loader": "^2.0.0",
         "express": "^4.15.2",
         "file-loader": "^0.11.1",
         "git-rev-sync": "^1.9.1",
@@ -72,8 +74,9 @@
         "sass-loader": "^6.0.5",{{/if_eq}}
         "postcss-loader": "^2.0.5",
         {{#if_eq project 'react'}}
-        "react-hot-loader": "^1.3.1",
-        {{/if_eq}}
+        "react": "^15.5.4",
+        "react-dom": "^15.5.4",
+        "react-hot-loader": "^1.3.1",{{/if_eq}}
         "style-loader": "^0.17.0",
         "url-loader": "^0.5.8",
         {{#if_eq project 'vue'}}
