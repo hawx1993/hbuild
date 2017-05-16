@@ -19,18 +19,10 @@ const mutations = {
     }
 }
 
-const actions = {
-    incrementAsync ({ commit }) {
-        setTimeout(() => {
-            commit('INCREMENT')
-        }, 200)
-    }
-}
 
 const store = new Vuex.Store({
     state,
-    mutations,
-    actions
+    mutations
 })
 
 export default store

@@ -40,9 +40,10 @@ module.exports = {
         alias: {
             '@': resolve('src'),
             'components': resolve('src/components'),
-            'lib': resolve('src/lib'),
+            'lib': resolve('src/lib'){{#if_eq project 'vue'}},
             'Vue': 'vue/dist/vue.js',
-            'vue$': 'vue/dist/vue.common.js'//防止出现运行时构建问题
+            //防止运行时出现构建问题
+            'vue$': 'vue/dist/vue.common.js'{{/if_eq}}
         }
     },
     module: {
@@ -102,15 +103,12 @@ module.exports = {
     },
     plugins: [
         new webpack.NoEmitOnErrorsPlugin(),
-        {{#if_eq project 'vue'}}
-        //提供全局Vue对象
+        //提供全局对象
         new webpack.ProvidePlugin({
-            Vue: ['vue/dist/vue.esm.js', 'default']
-        }),{{/if_eq}}
-        {{#useZepto}}
-        new webpack.ProvidePlugin({
+            {{#if_eq project 'vue'}}
+            Vue: ['vue/dist/vue.esm.js', 'default'],{{/if_eq}}
             $: 'zepto-webpack'
-        }),{{/useZepto}}
+        }),
         new webpack.DefinePlugin({
             "process.env": {
                 NODE_ENV: JSON.stringify("production")

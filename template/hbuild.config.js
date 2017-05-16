@@ -22,7 +22,7 @@ module.exports = {
                     return '/mock'
                     //日常
                 }else if(args.environment ===1){
-                    return '///host.daily.domain.com'
+                    return '//host.daily.domain.com'
                     //预发
                 }else if(args.environment ===2){
                     return '//host.pre.domain.com'

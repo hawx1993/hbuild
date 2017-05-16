@@ -13,6 +13,7 @@ var path = require('path'),
     connect = require('gulp-connect'),
     rename = require('gulp-rename'),
     webpack = require('webpack'),
+    webpackStream = require('webpack-stream'),
     config = require('./hbuild.config'),
     HappyPack = require('happypack'),
     ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin'),
@@ -21,77 +22,52 @@ var path = require('path'),
 
 var happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
-var getEnvironment= function() {
+var getEnvironment = function() {
     var env = {
-            //标志环境配置变量，默认为线上环境
-            environment: 3,
             //是否是开发环境
             dev: false
         },
-        argv;
-
-    try {
         argv = process.argv.pop();
-        //本地开发模式，连接本地数据或日常，预发数据库
-        if (argv === '--dev') {
+    switch (argv) {
+        case '--dev':
+        case '--dev-daily':
+        case '--dev-pre':
             env = {
-                dev: true,
-                environment: 0
-            }
-        } else if (argv === '--dev-daily') {
+                dev: true
+            };
+            break;
+        case '--daily':
+        case '--pre':
+        case '--prod':
             env = {
-                dev: true,
-                environment: 1
+                dev: false
             }
-        } else if (argv === '--dev-pre') {
-            env = {
-                dev: true,
-                environment: 2
-            }
-            //部署线上，连接日常，预发，线上数据库
-        } else if (argv === '--daily') {
-            env = {
-                dev: false,
-                environment: 1
-            }
-        } else if (argv === '--pre') {
-            env = {
-                dev: false,
-                environment: 2
-            }
-        } else if (argv === '--prod') {
-            env = {
-                dev: false,
-                environment: 3
-            }
-        }
-    } catch (e) {
-        console.log(e);
-        process.exit(1);
     }
     return env;
 };
 var args = getEnvironment();
 
 gulp.task("clean", function() {
+    if (!config.outputPath) return null;
+
     del.sync(config.outputPath);
 });
 
-gulp.task("icon", function() {
-    return gulp.src(['./src/assets/*.+(ico|jpg|png|jpeg|gif|eot|svg|ttf|woff)'])
-        .pipe(gulp.dest('./build/static/'));
+gulp.task("assets", function() {
+    return gulp.src(['./src/assets/*.+(ico|png|jpeg|jpg|gif|eot|svg|ttf|woff)'])
+        .pipe(gulp.dest('./build/static/')).pipe(connect.reload());
 });
 gulp.task("html", function() {
-    if(args.dev){
+    if (args.dev) {
         return gulp.src(['./src/pages/*/+([^\.]).html'])
             .pipe(ejs())
             .pipe(replace(/\$\$_CDNPATH_\$\$/g, '/static'))
-            .pipe(rename(function (path) {
+            .pipe(rename(function(path) {
                 path.basename = path.dirname;
                 path.dirname = "";
             }))
-            .pipe(gulp.dest('./build/pages/'));
-    }else{
+            .pipe(gulp.dest('./build/pages/')).pipe(connect.reload());
+    } else {
         return gulp.src(['./src/pages/*/+([^\.]).html'])
             .pipe(ejs())
             .pipe(replace(/\$\$_CDNPATH_\$\$/g, '../../../build/static/'))
@@ -101,26 +77,79 @@ gulp.task("html", function() {
                 collapseWhitespace: true,
                 removeComments: true
             }))
-            .pipe(rename(function (path) {
+            .pipe(rename(function(path) {
                 path.basename = path.dirname;
                 path.dirname = "";
             }))
             .pipe(gulp.dest('./build/pages/'));
     }
 });
-//监听HTML文件变化
-gulp.task("watch",["html"], function() {
-    function watchhtml() {
-        var urls =  ["src/**/*.html"];
-        gulp.watch(urls, function() {
-            gulp.start("html");
+gulp.task("js", function() {
+    var source = [
+            path.join('src/pages', '/**/*.js'),
+            path.join('src/components', '/**/*.js'),
+            path.join('src/pages', '/**/*.jsx'),
+            path.join('src/components', '/**/*.jsx'),
+            path.join('src/pages', '/**/*.vue'),
+            path.join('src/components', '/**/*.vue')
+        ],
+        stream = gulp.src(source).pipe(
+            webpackStream({
+                module: {
+                    loaders: [
+                        { test: /\.vue$/, loader: 'vue' },
+                    ]
+                }
+            })
+        );
+
+    stream = stream.pipe(gulp.dest(path.join(config.outputPath)));
+
+    stream = stream.pipe(connect.reload());
+
+    return stream;
+});
+gulp.task('css', function() {
+    var source = [
+            path.join('src/pages', '/**/*.less'),
+            path.join('src/components', '/**/*.less')
+        ],
+        stream = gulp.src(source, {
+            base: 'src'
         });
-    }
-    watchhtml();
+
+    stream = stream.pipe(gulp.dest(path.join(config.outputPath)));
+
+    stream = stream.pipe(connect.reload());
+
+    return stream;
+});
+
+//监听HTML文件变化
+gulp.task("watch", ["html", "js", "css"], function() {
+    //watch html
+    var urls = ["src/**/*.html"];
+    gulp.watch(urls, function() {
+        gulp.start("html");
+    });
+
+    var jsSource = [path.join('src', '/**/*.{' + 'js' + ',jsx}'), path.join('src', '/**/*.{' + 'vue' + ',jsx}')];
+    // watch js
+    var jsFile = jsSource.slice(0);
+    gulp.watch(jsFile, function() {
+        gulp.start('js')
+    })
+    var cssSource = [path.join('src', '/**/*.{' + 'less' + ',css}')];
+    // watch css
+    var cssFile = cssSource.slice(0);
+    gulp.watch(cssFile, function() {
+        gulp.start('css')
+    })
+
 });
 gulp.task("webpack", function() {
     //线上环境
-    if(!args.dev) {
+    if (!args.dev) {
         webpackConfig.plugins.push(
             new webpack.DefinePlugin({
                 'process.env': {
@@ -131,7 +160,7 @@ gulp.task("webpack", function() {
         webpackConfig.plugins.push(
             new ParallelUglifyPlugin({
                 cacheDir: 'node_modules/.cache/uglifyjs_cache',
-                uglifyJS:{
+                uglifyJS: {
                     output: {
                         comments: false
                     },
@@ -141,7 +170,7 @@ gulp.task("webpack", function() {
                 }
             })
         );
-    }else{
+    } else {
         webpackConfig.plugins.push(
             new HappyPack({
                 id: 'jsHappy',
@@ -157,6 +186,7 @@ gulp.task("webpack", function() {
 
     return new Promise(function(resolve, reject) {
         var compilerRunCount = 0;
+
         function bundle(err, stats) {
             if (err) {
                 return reject(err);
@@ -178,15 +208,15 @@ gulp.task("dev", function() {
 });
 //部署日常，预发或线上
 var taskName = process.argv.pop();
-taskName!=='dev' && gulp.task(taskName, function() {
+taskName !== 'dev' && gulp.task(taskName, function() {
     gulp.start("build");
 });
 
-gulp.task('build', function(cb){
-    if(args.dev){
-        gulpSequence('clean','webpack','html','icon', 'watch', cb);
+gulp.task('build', function(cb) {
+    if (args.dev) {
+        gulpSequence('clean', 'webpack', 'html', 'assets', 'watch', cb);
     } else {
-        gulpSequence('clean', 'webpack','html','icon',cb);
+        gulpSequence('clean', 'webpack', 'html', 'assets', cb);
     }
 });
 
@@ -198,21 +228,19 @@ gulp.task('start', ['build'], function() {
         host: config.host,
         middleware: function() {
             return [
-                function (req, res, next) {
+                function(req, res, next) {
                     if (req.url.indexOf('mock') !== -1 && req.url.indexOf('.json') === -1) {
                         req.url = req.url.replace(/\?.*/, '') + '.json';
                     }
                     var filepath = path.join('./', req.url);
-                    if ('POSTPUTDELETE'.indexOf(req.method.toUpperCase()) > -1
-                        && fs.existsSync(filepath) && fs.statSync(filepath).isFile()) {
+                    if ('POSTPUTDELETE'.indexOf(req.method.toUpperCase()) > -1 &&
+                        fs.existsSync(filepath) && fs.statSync(filepath).isFile()) {
                         return res.end(fs.readFileSync(filepath));
                     }
                     next();
                 }
             ];
         },
-        livereload: args.dev ? {
-            port: config.port + 10000
-        } : false
+        livereload: true
     });
 });

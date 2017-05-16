@@ -1,7 +1,7 @@
 {
     "name": "{{ name }}",
     "version": "1.0.0",
-    "description": "repaid build h5/vue/react project starter kit",
+    "description": "{{ description }}",
     "main": "gulpfile.js",
     "directories": {
         "doc": "docs"
@@ -38,7 +38,7 @@
     },
     "homepage": "https://github.com/hawx1993/hbuild#readme",
     "dependencies": {
-        {{#if_eq project 'vue'}},
+        {{#if_eq project 'vue'}}
         "vue": "^2.3.3",
         "vue-template-compiler": "^2.3.3"{{/if_eq}}{{#vuex}},
         "vuex": "^2.3.1"{{/vuex}}
@@ -61,6 +61,7 @@
         "gulp-connect": "^5.0.0",
         "gulp-ejs": "^3.0.1",
         "gulp-htmlmin": "^3.0.0",
+        "gulp-less": "^3.3.0",
         "gulp-rename": "^1.2.2",
         "gulp-replace": "^0.5.4",
         "gulp-sequence": "^0.4.6",
@@ -85,8 +86,9 @@
         {{/if_eq}}
         "webpack": "^2.5.1",
         "webpack-parallel-uglify-plugin": "^0.4.1",
-        "xo": "^0.18.2"{{#useZepto}},
-        "zepto-webpack": "^1.2.1"{{/useZepto}}
+        "webpack-stream": "^3.2.0",
+        "xo": "^0.18.2",
+        "zepto-webpack": "^1.2.1"
     },
     "engines": {
         "node": ">= 4.0.0",
