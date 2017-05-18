@@ -12,15 +12,8 @@
         "dev-pre": "gulp dev --dev-pre",
         "daily": "gulp daily --daily",
         "pre": "gulp pre --pre",
-        "prod": "gulp prod --prod"{{#esLint}},
-        "lint": "xo **/src/**/*.{vue,js} !node_modules/**"{{/esLint}}
-    },
-    "xo": {
-        "extends": "./.eslintrc",
-        "esnext": true,
-        "envs": [
-            "browser"
-        ]
+        "prod": "gulp prod --prod",
+        "eslint": "gulp eslint"
     },
     "repository": {
         "type": "git",
@@ -60,6 +53,7 @@
         "gulp": "^3.9.1",
         "gulp-connect": "^5.0.0",
         "gulp-ejs": "^3.0.1",
+        "gulp-eslint": "^3.0.1",
         "gulp-htmlmin": "^3.0.0",
         "gulp-rename": "^1.2.2",
         "gulp-replace": "^0.5.4",
@@ -86,7 +80,6 @@
         "webpack-dev-middleware": "^1.10.2",
         "webpack-hot-middleware": "^2.18.0",
         "webpack-parallel-uglify-plugin": "^0.4.1",
-        "xo": "^0.18.2",
         "zepto-webpack": "^1.2.1"
     },
     "engines": {

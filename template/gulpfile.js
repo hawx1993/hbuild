@@ -1,29 +1,28 @@
 /**
  * Created by trigkit4 on 2017/5/8.
  */
-var path = require('path'),
-    os = require('os'),
-    fs = require('fs'),
-    gulp = require("gulp"),
-    del = require("del"),
-    ejs = require('gulp-ejs'),
-    replace = require('gulp-replace'),
-    htmlmin = require("gulp-htmlmin"),
-    gulpSequence = require('gulp-sequence'),
-    connect = require('gulp-connect'),
-    named = require('vinyl-named'),
-    rename = require('gulp-rename'),
-    webpack = require('webpack'),
-    express = require('express'),
-    config = require('./hbuild.config'),
-    ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin'),
-    webpackConfig = require('./webpack.config');
+const path = require('path');
+const fs = require('fs');
+const gulp = require("gulp");
+const del = require("del");
+const ejs = require('gulp-ejs');
+const replace = require('gulp-replace');
+const htmlmin = require("gulp-htmlmin");
+const gulpSequence = require('gulp-sequence');
+const connect = require('gulp-connect');
+const eslint = require('gulp-eslint');
+const named = require('vinyl-named');
+const rename = require('gulp-rename');
+const webpack = require('webpack');
+const express = require('express');
+const config = require('./hbuild.config');
+const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin');
+const webpackConfig = require('./webpack.config');
 
-var myConfig = Object.create(webpackConfig);
-myConfig.devtool = "eval";
+let myConfig = Object.create(webpackConfig);
 
-var getEnvironment = function() {
-    var env = {
+const getEnvironment = () => {
+    let env = {
             //是否是开发环境
             dev: false
         },
@@ -45,32 +44,38 @@ var getEnvironment = function() {
     }
     return env;
 };
-var args = getEnvironment();
+let args = getEnvironment();
+function resolve(arg1,arg2,arg3) {
+    let dir1 = arg1 || '', dir2 = arg2 || '', dir3 = arg3 || '';
 
+    return path.join(config[dir1],config[dir2],config[dir3])
+}
 gulp.task("clean", function() {
-    if (!config.outputPath) return null;
+    if (!config.buildPath) return null;
 
-    del.sync(config.outputPath);
+    del.sync(config.buildPath);
 });
 
 gulp.task("assets", function() {
-    return gulp.src(['./src/assets/*.+(ico|png|jpeg|jpg|gif|eot|svg|ttf|woff)'])
-        .pipe(gulp.dest('./build/static/')).pipe(connect.reload());
+    return gulp.src([resolve('src','assets')+'/*.+(ico|png|jpeg|jpg|gif|eot|svg|ttf|woff)'])
+        .pipe(gulp.dest(resolve('buildPath','staticPath')))
+        .pipe(connect.reload());
+
 });
 gulp.task("html", function() {
     if (args.dev) {
-        return gulp.src(['./src/pages/*/+([^\.]).html'])
+        return gulp.src([resolve('src','pages')+'/*/+([^\.]).html'])
             .pipe(ejs())
             .pipe(replace(/\$\$_CDNPATH_\$\$/g, '/static'))
             .pipe(rename(function(path) {
                 path.basename = path.dirname;
                 path.dirname = "";
             }))
-            .pipe(gulp.dest('./build/pages/')).pipe(connect.reload());
+            .pipe(gulp.dest(resolve('buildPath','pages'))).pipe(connect.reload());
     } else {
-        return gulp.src(['./src/pages/*/+([^\.]).html'])
+        return gulp.src([resolve('src','pages')+'/*/+([^\.]).html'])
             .pipe(ejs())
-            .pipe(replace(/\$\$_CDNPATH_\$\$/g, '../../../build/static/'))
+            .pipe(replace(/\$\$_CDNPATH_\$\$/g, '../../'+resolve('staticPath')))
             .pipe(htmlmin({
                 minifyJS: true,
                 minifyCSS: true,
@@ -81,14 +86,14 @@ gulp.task("html", function() {
                 path.basename = path.dirname;
                 path.dirname = "";
             }))
-            .pipe(gulp.dest('./build/pages/'));
+            .pipe(gulp.dest(resolve('buildPath','pages')));
     }
 });
 
 //监听文件变化
 gulp.task("watch", ["html"], function() {
     //watch html
-    var urls = ["src/**/*.html"];
+    let urls = [config.src+"/**/*.html"];
     gulp.watch(urls, function() {
         gulp.start("html");
     });
@@ -125,10 +130,10 @@ gulp.task("webpack", function() {
             new webpack.HotModuleReplacementPlugin()
         )
     }
-    var compiler = webpack(myConfig);
+    let compiler = webpack(myConfig);
 
     return new Promise(function(resolve, reject) {
-        var compilerRunCount = 0;
+        let compilerRunCount = 0;
 
         function bundle(err, stats) {
             if (err) {
@@ -165,15 +170,25 @@ gulp.task('build', function(cb) {
 
 //启动本地服务器及mock server
 gulp.task('server', ['build'], function() {
-    var compiler = webpack(webpackConfig);
+    let compiler;
+    let hotMiddleString = 'webpack-hot-middleware/client?reload=true';
+    try {
+        compiler = webpack(webpackConfig)
+    } catch (err) {
+        console.log(err.message);
+        process.exit(1)
+    }
 
-    var app = express();
-    var devMiddleWare = require('webpack-dev-middleware')(compiler, {
+    for(let file in webpackConfig.entry){
+        webpackConfig.entry[file].unshift(hotMiddleString)
+    }
+    const app = express();
+    const devMiddleWare = require('webpack-dev-middleware')(compiler, {
         publicPath: webpackConfig.output.publicPath,
         quiet: true
     });
     connect.server({
-        root: ['./', path.join(config.outputPath), path.join(config.outputPath, 'pages')],
+        root: ['./', resolve('buildPath'),resolve('buildPath','pages')],
         port: config.port,
         host: config.host,
         middleware: function() {
@@ -197,4 +212,12 @@ gulp.task('server', ['build'], function() {
         },
         livereload: true
     });
+});
+//eslint
+gulp.task('eslint', function() {
+    let source = [path.join(config.src, '/**/*.{js,vue,jsx}'),
+        '!' + path.join(config.lib, '/**/*.js')];
+    return gulp.src(source)
+        .pipe(eslint())
+        .pipe(eslint.format())
 });

@@ -18,6 +18,7 @@ Hbuild使用基于vue-cli的命令行工具，全局注册后可快速生成项�
 - autoprefixer
 - mock server
 - eslint
+- Support for building multi-page applications
 
 其中zepto是默认全局引入的，可直接使用。默认支持Babel转码。支持HMR
     
@@ -25,7 +26,7 @@ Hbuild使用基于vue-cli的命令行工具，全局注册后可快速生成项�
 ### Get Started
     
     
-You'd better have node >=4 and npm >=3 installed:
+You'd better have node >=4 and npm >=3 and gulp >=3.9 installed:
     
 ```javascript
 $ npm install -g vue-cli
@@ -40,8 +41,8 @@ $ npm run dev
 # bundle all scripts and styles for production use
 $ npm run build
  
-# lint your code
-$ npm run lint
+# lint your js code
+$ npm run eslint
 ```
     
 ### 目录结构
@@ -74,10 +75,8 @@ $ npm run lint
 - 脚手架默认会将项目编译文件输出到build目录，该目录包含pages和static目录。pages存放HTML文件，static存放js，css，图标，字体等静态资源文件。
 - 当你生成模板文件时，可以在本地修改该模板，使用`vue init ./hbuild new-project`即可使用你自定义的模板文件
 
+- 修改默认文件夹的名称，需要在`hbuild.config.js`文件就对应文件变量做修改
 
-### License
-    
-MIT © hawx1993
 
 ### 目录结构
 
@@ -125,3 +124,6 @@ MIT © hawx1993
 ├── webpack.config.js
 └── yarn.lock
 ```
+### License
+    
+MIT © hawx1993

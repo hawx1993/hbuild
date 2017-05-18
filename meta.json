@@ -30,11 +30,6 @@
             "type": "list",
             "message": "Choose CSS Pre-Processor?",
             "choices": ["LESS","SASS"]
-        },
-        "esLint":{
-            "type": "confirm",
-            "message": "Enable ESLint to lint your code?",
-            "default": true
         }
     },
     "filters": {
@@ -49,8 +44,7 @@
         "src/common/css/*.scss": "preProcessor == 'SASS'",
         "src/pages/index/*.jsx": "project == 'react' ",
         "src/pages/index/*.js": "project !=='react'",
-        "src/pages/index/module/*.jsx": "project == 'react'",
-        ".eslintrc": "esLint"
+        "src/pages/index/module/*.jsx": "project == 'react'"
     },
     "completeMessage":"To get started:\n\n  cd   {{destDirName}}\n  npm i || yarn\n  npm run dev"
 }

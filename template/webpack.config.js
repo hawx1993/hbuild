@@ -1,30 +1,29 @@
 /**
  * Created by trigkit4 on 2017/5/8.
  */
-var fs = require('fs');
-var path = require('path');
-var express = require('express');
-var webpack = require('webpack');
-var config = require('./hbuild.config');
-var autoprefixer = require('autoprefixer');
+const fs = require('fs');
+const path = require('path');
+const express = require('express');
+const webpack = require('webpack');
+const config = require('./hbuild.config');
+const autoprefixer = require('autoprefixer');
 
-function resolve (dir) {
-    return path.join(__dirname,  dir)
+function resolve (dir1,dir2) {
+    let path1 = dir1 || '',path2 = dir2 || '';
+    return path.join(__dirname,  path1,path2)
 }
-
-var pageDir = resolve('src/pages');
-var entryFilesArray = fs.readdirSync(pageDir);
-var entryFiles = {};
+let pageDir = resolve(config.src,config.pages);
+let entryFilesArray = fs.readdirSync(pageDir);
+let entryFiles = {};
 entryFilesArray.forEach(function(file){
     var state = fs.statSync(pageDir+'/'+file);
     if(state.isDirectory(file)){
         var dirname = path.basename(file);
         entryFiles[dirname+'/index'] = [
-            'webpack-hot-middleware/client?reload=true',
             {{#if_eq project 'react'}}
-            resolve('src/pages/'+ dirname + '/index.jsx')
+            path.join(__dirname,config.src,config.pages ,dirname , 'index.jsx')
             {{else}}
-            resolve('src/pages/'+ dirname + '/index.js')
+            path.join(__dirname,config.src,config.pages , dirname ,'index.js')
             {{/if_eq}}
         ]
     }
@@ -32,8 +31,8 @@ entryFilesArray.forEach(function(file){
 module.exports = {
     entry: entryFiles,
     output: {
-        path:  resolve('/build/static/'),
-        publicPath: '/static',
+        path: resolve(config.buildPath,config.staticPath),
+        publicPath: '/'+config.staticPath,
         filename: '[name].js',
         hotUpdateChunkFilename: 'hot/hot-update.js',
         hotUpdateMainFilename: 'hot/hot-update.json'
@@ -41,9 +40,9 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.vue', '.json','.less', '.scss', '.css','jsx'],
         alias: {
-            '@': resolve('src'),
-            'components': resolve('src/components'),
-            'lib': resolve('src/lib'){{#if_eq project 'vue'}},
+            '@': resolve(config.src),
+            'components': resolve(config.src,config.components),
+            'lib': resolve(config.src,config.lib){{#if_eq project 'vue'}},
             'vue': 'vue/dist/vue.js',
             //防止运行时出现构建问题
             'vue$': 'vue/dist/vue.common.js'{{/if_eq}}
@@ -55,7 +54,7 @@ module.exports = {
             {
                 test: /\.vue$/,
                 loader: 'vue-loader',
-                include: resolve('src'),
+                include: resolve(config.src),
                 exclude: /node_modules/,
                 options: {
                     postcss: [autoprefixer()]
@@ -64,7 +63,7 @@ module.exports = {
             {
                 test: /\.jsx?$/,
                 exclude: /(node_modules|bower_components)/,
-                include: resolve('src'),
+                include: resolve(config.src),
                 loader: 'babel-loader?cacheDirectory'
             },
             {{#if_eq preProcessor 'LESS'}}

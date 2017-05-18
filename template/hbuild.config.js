@@ -6,14 +6,24 @@
 module.exports = {
     //项目名称
     name: 'hbuild project',
+    title: '{{ name }}',
     //本地服务器端口
     port: 3001,
+    //文件目录
+    '': '',
+    src: 'src',
+    lib:  'lib',
+    assets: 'assets',
+    common: 'common',
+    pages:  'pages',
+    components:'components',
     //hostname
-    host: 'h5.dev.weidian.com',
-    title: '{{ name }}',
+    host: 'http://h5.dev.weidian.com',
     //编译输出目录
-    outputPath: 'build/',
-    staticPath: 'build/static',
+    buildPath: 'build',
+    staticPath: 'static',
+    //是否提取css文件
+    extractCSS: false,
     //需要根据环境替换的变量
     replacements: [
         {
