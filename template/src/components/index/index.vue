@@ -25,7 +25,7 @@
 
 <script>
     {{#vuex}}
-    import Counter from '../counter/index.vue'
+    import Counter from 'components/counter/index.vue'
     {{/vuex}}
     export default {
         data(){

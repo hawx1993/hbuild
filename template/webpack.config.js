@@ -20,6 +20,7 @@ entryFilesArray.forEach(function(file){
     if(state.isDirectory(file)){
         var dirname = path.basename(file);
         entryFiles[dirname+'/index'] = [
+            'webpack-hot-middleware/client?reload=true',
             {{#if_eq project 'react'}}
             resolve('src/pages/'+ dirname + '/index.jsx')
             {{else}}
@@ -33,7 +34,9 @@ module.exports = {
     output: {
         path:  resolve('/build/static/'),
         publicPath: '/static',
-        filename: '[name].js'
+        filename: '[name].js',
+        hotUpdateChunkFilename: 'hot/hot-update.js',
+        hotUpdateMainFilename: 'hot/hot-update.json'
     },
     resolve: {
         extensions: ['.js', '.vue', '.json','.less', '.scss', '.css','jsx'],
@@ -41,7 +44,7 @@ module.exports = {
             '@': resolve('src'),
             'components': resolve('src/components'),
             'lib': resolve('src/lib'){{#if_eq project 'vue'}},
-            'Vue': 'vue/dist/vue.js',
+            'vue': 'vue/dist/vue.js',
             //防止运行时出现构建问题
             'vue$': 'vue/dist/vue.common.js'{{/if_eq}}
         }
@@ -108,11 +111,6 @@ module.exports = {
             {{#if_eq project 'vue'}}
             Vue: ['vue/dist/vue.esm.js', 'default'],{{/if_eq}}
             $: 'zepto-webpack'
-        }),
-        new webpack.DefinePlugin({
-            "process.env": {
-                NODE_ENV: JSON.stringify("production")
-            }
         }),
         new webpack.optimize.CommonsChunkPlugin('common')
     ]

@@ -33,9 +33,9 @@ new Index();
 {{#if_eq project 'vue'}}
 
 import Vue from 'vue'
-import router from '../../components/router/router'
+import router from 'components/router/router'
 {{#vuex}}
-import store from '../../components/store/store.js'
+import store from 'components/store/store.js'
 {{/vuex}}
 
 let Index = {

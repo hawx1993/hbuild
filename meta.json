@@ -24,7 +24,7 @@
             "when": "project=='vue'",
             "type": "confirm",
             "message": "Use vuex in Your project?",
-            "default": false
+            "default": true
         },
         "preProcessor": {
             "type": "list",

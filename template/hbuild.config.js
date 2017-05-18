@@ -13,6 +13,7 @@ module.exports = {
     title: '{{ name }}',
     //编译输出目录
     outputPath: 'build/',
+    staticPath: 'build/static',
     //需要根据环境替换的变量
     replacements: [
         {

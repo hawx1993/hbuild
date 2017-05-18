@@ -79,86 +79,49 @@ $ npm run lint
     
 MIT © hawx1993
 
-
-
-###目录结构
+### 目录结构
 
 ```bash
-├── README.md					#自述文件
-
-├── gulpfile.js					#gulp文件
-
-├── hbuild.config.js			#脚手架配置文件
-
-├── mock						#mock数据文件
-
-│   └── h5
-
-├── package.json			
-
-├── src							#源文件
-
-│   ├── assets					#静态资源
-
-│   │   └── logo.ico			#图标
-
-│   ├── common					#共用代码
-
-│   │   ├── css					#共用css
-
-│   │   │   ├── common.less
-
-│   │   │   └── common.scss
-
-│   │   └── js					#共用js
-
-│   │       ├── api.js			#接口文件
-
-│   │       ├── config.js		#配置文件
-
-│   │       └── util.js			#工具函数文件
-
-│   ├── components				#组件
-
-│   │   ├── counter				#vue计数器组件
-
-│   │   │   └── index.vue
-
-│   │   ├── index				#vue首页
-
-│   │   │   └── index.vue
-
-│   │   ├── meta				#H5页面meta部分
-
-│   │   │   └── index.html
-
-│   │   ├── router				#vue路由
-
-│   │   │   └── router.js
-
-│   │   └── store				#vuex store文件
-
-│   │       └── store.js
-
-│   ├── lib						#第三方库
-
-│   └── pages					#页面结构
-
-│       └── index				#首页
-
-│           ├── index.html
-
-│           ├── index.js
-
-│           ├── index.less
-
-│           ├── index.scss
-
-│           └── tpl				#h5页面的模板部分
-
-│               └── main.tpl.html
-
-├── webpack.config.js			#webpack配置文件		
-
-└── yarn.lock					#yarn文件
+.
+├── README.md
+├── gulpfile.js                 # gulp文件
+├── hbuild.config.js            # 脚手架配置文件
+├── mock                        # mock数据目录
+│   └── h5
+├── package.json    
+├── src                         # 源文件 
+│   ├── assets                  # 静态资源文件
+│   │   └── logo.ico
+│   ├── common                  # 公用代码
+│   │   ├── css
+│   │   │   ├── common.less
+│   │   │   └── common.scss
+│   │   └── js
+│   │       ├── api.js          # 接口文件
+│   │       ├── config.js       # 配置文件
+│   │       └── util.js         # 工具函数文件
+│   ├── components              # 组件
+│   │   ├── counter
+│   │   │   └── index.vue
+│   │   ├── index
+│   │   │   └── index.vue
+│   │   ├── meta                # h5 meta头部信息模块
+│   │   │   └── index.html
+│   │   ├── router              # vue路由模块
+│   │   │   └── router.js
+│   │   └── store               # vuex store模块
+│   │       └── store.js
+│   ├── lib                     # 第三方库 
+│   └── pages                   # 页面    
+│       └── index
+│           ├── index.html
+│           ├── index.js
+│           ├── index.jsx
+│           ├── index.less
+│           ├── index.scss
+│           └── module          # 页面模板模块
+│               ├── main.jsx
+│               └── main.tpl.html
+├── webpack.config.js
+└── yarn.lock
 ```
