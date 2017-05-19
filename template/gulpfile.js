@@ -18,6 +18,7 @@ const express = require('express');
 const config = require('./hbuild.config');
 const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin');
 const webpackConfig = require('./webpack.config');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 let myConfig = Object.create(webpackConfig);
 
@@ -46,23 +47,25 @@ const getEnvironment = () => {
 };
 let args = getEnvironment();
 function resolve(arg1,arg2,arg3) {
-    let dir1 = arg1 || '', dir2 = arg2 || '', dir3 = arg3 || '';
+    let dir1 = arg1 || '',
+        dir2 = arg2 || '',
+        dir3 = arg3 || '';
 
     return path.join(config[dir1],config[dir2],config[dir3])
 }
-gulp.task("clean", function() {
+gulp.task("clean", ()=> {
     if (!config.buildPath) return null;
 
     del.sync(config.buildPath);
 });
 
-gulp.task("assets", function() {
+gulp.task("assets", ()=> {
     return gulp.src([resolve('src','assets')+'/*.+(ico|png|jpeg|jpg|gif|eot|svg|ttf|woff)'])
         .pipe(gulp.dest(resolve('buildPath','staticPath')))
         .pipe(connect.reload());
 
 });
-gulp.task("html", function() {
+gulp.task("html", ()=> {
     if (args.dev) {
         return gulp.src([resolve('src','pages')+'/*/+([^\.]).html'])
             .pipe(ejs())
@@ -75,7 +78,7 @@ gulp.task("html", function() {
     } else {
         return gulp.src([resolve('src','pages')+'/*/+([^\.]).html'])
             .pipe(ejs())
-            .pipe(replace(/\$\$_CDNPATH_\$\$/g, '../../'+resolve('staticPath')))
+            .pipe(replace(/\$\$_CDNPATH_\$\$/g, '../'+resolve('staticPath')))
             .pipe(htmlmin({
                 minifyJS: true,
                 minifyCSS: true,
@@ -91,7 +94,7 @@ gulp.task("html", function() {
 });
 
 //监听文件变化
-gulp.task("watch", ["html"], function() {
+gulp.task("watch", ["html"], ()=> {
     //watch html
     let urls = [config.src+"/**/*.html"];
     gulp.watch(urls, function() {
@@ -99,9 +102,89 @@ gulp.task("watch", ["html"], function() {
     });
 });
 
-gulp.task("webpack", function() {
+gulp.task("webpack", ()=> {
+    let sourceMap = config.style.sourceMap;
+
+    function getCssLoaders() {
+        let cssProcessors = [
+            {{#if_eq preProcessor 'SASS'}}
+            {loader: 'sass-loader?', test: /\.scss$/}{{/if_eq}}{{#if_eq preProcessor 'LESS'}},
+            {loader: 'less-loader?', test: /\.less$/}
+            {{/if_eq}}
+        ];
+
+        let plugins = webpackConfig.plugins;
+        let rules = webpackConfig.module.rules;
+        if(config.style.extract && !args.dev){
+            cssProcessors.forEach(processor => {
+                if(!processor.loader.indexOf('less-loader')){
+                    rules.push({
+                        test: processor.test,
+                        use: ExtractTextPlugin.extract({
+                            use: [{
+                                loader: 'css-loader',options:{
+                                    sourceMap: sourceMap
+                                }
+                            },{
+                                loader: 'less-loader',options:{
+                                    sourceMap: sourceMap
+                                }
+                            }]
+                        })
+                    });
+                    plugins.push(new ExtractTextPlugin(config.style.extractFileName))
+                }else if(!processor.loader.indexOf('sass-loader')){
+                    rules.concat({
+                        test: processor.test,
+                        use: ExtractTextPlugin.extract({
+                            use: ['css-loader','sass-loader']
+                        })
+                    });
+                    plugins.concat(new ExtractTextPlugin(config.style.extractFileName))
+                }
+            });
+        }else{
+            rules.push(
+                {{#if_eq preProcessor 'LESS'}}
+                {
+                    test: /\.less$/,
+                    use: [{
+                        loader: "style-loader" // 从JS字符串生成样式节点
+                    }, {
+                        loader: "css-loader" // 将CSS转化成CommonJS
+                    }, {
+                        loader: "less-loader" // 将LESS编译成CSS
+                    }]
+                },{{/if_eq}}
+                {{#if_eq preProcessor 'SASS'}}
+                {
+                    test: /\.scss$/,
+                    use: [{
+                        loader: "style-loader" // 从JS字符串生成样式节点
+                    }, {
+                        loader: "css-loader" // 将CSS转化成CommonJS
+                    }, {
+                        loader: "sass-loader" // 将LESS编译成CSS
+                    }]
+                },{{/if_eq}}
+                {
+                    test: /\.css/,
+                    use: [ 'style-loader', 'css-loader' ]
+                }
+            )
+        }
+    }
+
+    getCssLoaders();
+
+
     //线上环境
     if (!args.dev) {
+        //开发过程无需打开sourcemap
+        let webpackSourceMap = config.sourceMap;
+        if(webpackSourceMap){
+            webpackConfig["devtool"] = 'source-map';
+        }
         webpackConfig.plugins.push(
             new webpack.DefinePlugin({
                 'process.env': {
@@ -132,7 +215,7 @@ gulp.task("webpack", function() {
     }
     let compiler = webpack(myConfig);
 
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject)=> {
         let compilerRunCount = 0;
 
         function bundle(err, stats) {
@@ -151,16 +234,16 @@ gulp.task("webpack", function() {
     });
 });
 //本地开发模式或连接本地mock数据
-gulp.task("dev",function() {
+gulp.task("dev",()=> {
     gulp.start("server");
 });
 //部署日常，预发或线上
-var taskName = process.argv.pop();
-taskName !== 'dev' && gulp.task(taskName, function() {
+let taskName = process.argv.pop();
+taskName !== 'dev' && gulp.task(taskName, ()=> {
     gulp.start("build");
 });
 
-gulp.task('build', function(cb) {
+gulp.task('build', (cb)=> {
     if (args.dev) {
         gulpSequence('clean', 'html', 'assets', 'watch','webpack', cb);
     } else {
@@ -169,7 +252,7 @@ gulp.task('build', function(cb) {
 });
 
 //启动本地服务器及mock server
-gulp.task('server', ['build'], function() {
+gulp.task('server', ['build'], ()=> {
     let compiler;
     let hotMiddleString = 'webpack-hot-middleware/client?reload=true';
     try {
@@ -191,13 +274,13 @@ gulp.task('server', ['build'], function() {
         root: ['./', resolve('buildPath'),resolve('buildPath','pages')],
         port: config.port,
         host: config.host,
-        middleware: function() {
+        middleware: ()=> {
             return [
                 function(req, res, next) {
                     if (req.url.indexOf('mock') !== -1 && req.url.indexOf('.json') === -1) {
                         req.url = req.url.replace(/\?.*/, '') + '.json';
                     }
-                    var filepath = path.join('./', req.url);
+                    let filepath = path.join('./', req.url);
                     if ('POSTPUTDELETE'.indexOf(req.method.toUpperCase()) > -1 &&
                         fs.existsSync(filepath) && fs.statSync(filepath).isFile()) {
                         return res.end(fs.readFileSync(filepath));
@@ -214,7 +297,7 @@ gulp.task('server', ['build'], function() {
     });
 });
 //eslint
-gulp.task('eslint', function() {
+gulp.task('eslint', ()=> {
     let source = [path.join(config.src, '/**/*.{js,vue,jsx}'),
         '!' + path.join(config.lib, '/**/*.js')];
     return gulp.src(source)

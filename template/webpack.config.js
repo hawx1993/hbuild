@@ -16,9 +16,9 @@ let pageDir = resolve(config.src,config.pages);
 let entryFilesArray = fs.readdirSync(pageDir);
 let entryFiles = {};
 entryFilesArray.forEach(function(file){
-    var state = fs.statSync(pageDir+'/'+file);
+    let state = fs.statSync(pageDir+'/'+file);
     if(state.isDirectory(file)){
-        var dirname = path.basename(file);
+        let dirname = path.basename(file);
         entryFiles[dirname+'/index'] = [
             {{#if_eq project 'react'}}
             path.join(__dirname,config.src,config.pages ,dirname , 'index.jsx')
@@ -66,28 +66,6 @@ module.exports = {
                 include: resolve(config.src),
                 loader: 'babel-loader?cacheDirectory'
             },
-            {{#if_eq preProcessor 'LESS'}}
-            {
-                test: /\.less$/,
-                use: [{
-                    loader: "style-loader" // 从JS字符串生成样式节点
-                }, {
-                    loader: "css-loader" // 将CSS转化成CommonJS
-                }, {
-                    loader: "less-loader" // 将LESS编译成CSS
-                }]
-            },{{/if_eq}}
-            {{#if_eq preProcessor 'SASS'}}
-            {
-                test: /\.scss$/,
-                    use: [{
-                    loader: "style-loader" // 将 JS 字符串生成为 style 节点
-                },  {
-                    loader: "css-loader" // 将 CSS 转化成 CommonJS 模块
-                },  {
-                    loader: "sass-loader" // 将 Sass 编译成 CSS
-                }]
-            },{{/if_eq}}
             {
                 test: /\.html$/,
                 loader: "ejs-template-loader"
