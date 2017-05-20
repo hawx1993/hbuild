@@ -31,7 +31,7 @@ You'd better have node >=4 and npm >=3 and gulp >=3.9 installed:
     
 ```bash
 $ npm install -g hbuild-cli
-$ hbuild init new-project
+$ hbuild init new-project or: h init new-project //support short name
 $ cd new-project
 $ npm install
  
