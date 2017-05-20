@@ -75,18 +75,3 @@ a {
     text-decoration: none;
     background-color: transparent;
 }
-
-//多行文本省略
-.multi-line-ellipsis($line) {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: $line;
-    -webkit-box-orient: vertical;
-    word-break:break-all;
-}
-.hidden{
-    display: none;
-}
-button:focus,input:focus,a:focus,a:active,a:hover,textarea:focus {
-    outline: 0;
-}

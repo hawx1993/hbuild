@@ -10,7 +10,7 @@
     </div>
 </template>
 {{#if_eq preProcessor 'LESS'}}
-    <style lang="less" rel="stylesheet/less">
+    <style lang="less" rel="stylesheet/less" scoped>
         .counter-wrapper{
             .counter {
                 margin: 100px auto;
@@ -35,7 +35,7 @@
 {{/if_eq}}
 
 {{#if_eq preProcessor 'SASS'}}
-    <style lang="less" rel="stylesheet/less">
+    <style lang="scss" scoped>
         .counter-wrapper{
             .counter {
                 margin: 100px auto;

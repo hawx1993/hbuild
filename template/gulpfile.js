@@ -114,9 +114,14 @@ gulp.task("html", ()=> {
 gulp.task("watch", ["html"], ()=> {
     //watch html
     let urls = [config.src+"/**/*.html"];
-    gulp.watch(urls, function() {
+    gulp.watch(urls, ()=> {
         gulp.start("html");
     });
+    //watch assets
+    let assets = config.src+'/'+config.assets+'/*.+(ico|png|jpeg|jpg|gif|eot|svg|ttf|woff)';
+    gulp.watch(assets,()=>{
+        gulp.start('assets')
+    })
 });
 
 gulp.task("webpack", ()=> {
@@ -146,13 +151,11 @@ gulp.task("webpack", ()=> {
     function getCssLoaders() {
         let cssProcessors = [
             {{#if_eq preProcessor 'SASS'}}
-            {loader: 'sass-loader?', test: /\.scss$/},{{/if_eq}}{{#if_eq preProcessor 'LESS'}}
+            {loader: 'sass-loader?', test: /\.scss$/}{{else}}
             {loader: 'less-loader?', test: /\.less$/}
             {{/if_eq}}
         ];
 
-        let plugins = webpackConfig.plugins;
-        let rules = webpackConfig.module.rules;
         if(config.style.extract && !args.dev){
             cssProcessors.forEach(processor => {
                 if(!processor.loader.indexOf('less-loader')){
@@ -172,13 +175,21 @@ gulp.task("webpack", ()=> {
                     });
                     plugins.push(new ExtractTextPlugin(config.style.extractFileName))
                 }else if(!processor.loader.indexOf('sass-loader')){
-                    rules.concat({
+                    rules.push({
                         test: processor.test,
                         use: ExtractTextPlugin.extract({
-                            use: ['css-loader','sass-loader']
+                            use: [{
+                                loader: 'css-loader',options:{
+                                    sourceMap: sourceMap
+                                }
+                            },{
+                                loader: 'sass-loader',options:{
+                                    sourceMap: sourceMap
+                                }
+                            }]
                         })
                     });
-                    plugins.concat(new ExtractTextPlugin(config.style.extractFileName))
+                    plugins.push(new ExtractTextPlugin(config.style.extractFileName))
                 }
             });
         }else{
