@@ -3,7 +3,7 @@
     
 
 
-Hbuild使用基于vue-cli的命令行工具，全局注册后可快速生成项目启动套件。你可以使用Hbuild生成一个h5项目，或者vue项目（默认搭配react-router，可自由选择vuex），或者react项目。该套件包含如下特点：
+Hbuild使用hbuild-cli命令行工具，全局注册后可快速生成项目启动套件。你可以使用Hbuild生成一个h5项目，或者vue项目（默认搭配react-router，可自由选择vuex），或者react项目。该套件包含如下特点：
     
 ### Features
        
@@ -29,18 +29,16 @@ Hbuild使用基于vue-cli的命令行工具，全局注册后可快速生成项�
     
 You'd better have node >=4 and npm >=3 and gulp >=3.9 installed:
     
-```javascript
-$ npm install -g vue-cli
-$ vue init hawx1993/hbuild new-project
-$ //当你本地环境生成Hbuild后，下次可直接使用：
-$ //vue init ./hbuild new-project
+```bash
+$ npm install -g hbuild-cli
+$ hbuild init new-project
 $ cd new-project
 $ npm install
  
 # edit files and start developing
 $ npm run dev
 # bundle all scripts and styles for production use
-$ npm run build
+$ npm run prod
  
 # lint your js code
 $ npm run eslint
@@ -49,10 +47,11 @@ $ npm run eslint
 
 ### Local Templates
 
-when you download the template,you can also use a template on your local file system:
+when you clone this project,you can  use a template on your local file system:
 
-```javascript
-$ vue init ./hbuild new-project
+```bash
+$ git clone git@github.com:hawx1993/hbuild.git
+$ hbuild init ./hbuild new-project
 ```
 
 ### 目录结构
@@ -109,7 +108,6 @@ $ vue init ./hbuild new-project
 - 字符串替换：`$$_CDNPATH_$$`会被编译替换为`build/static`目录
 
 - 脚手架默认会将项目编译文件输出到build目录，该目录包含pages和static目录。pages存放HTML文件，static存放js，css，图标，字体等静态资源文件。
-- 当生成模板文件时，可以在本地修改该模板，使用`vue init ./hbuild new-project`即可在本地使用该模板文件
 
 - 修改默认文件夹的名称，需要在`hbuild.config.js`文件就对应文件变量做修改
 
