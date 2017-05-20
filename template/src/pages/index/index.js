@@ -11,6 +11,8 @@ import '../../common/css/common.scss';
 import './index.scss';
 {{/if_eq}}
 import mainTpl from './module/main.tpl.html'
+import util from '../../common/js/util';
+import Api from '../../common/js/api';
 
 class Index {
     constructor() {
@@ -18,13 +20,16 @@ class Index {
         this.getList();
     }
     getList(){
-        let data = {
-            name: 'trigkti4',
-            msg: 'welcome to  hbuild'
-        }
-        this.mainContainer.html(mainTpl({
-            data: data
-        }));
+        util.ajax({
+            url: Api.queryItemList
+        },(data)=>{
+            let items = data.result.items;
+            this.mainContainer.html(mainTpl({
+                data: items
+            }));
+        })
+
+
     }
 }
 new Index();

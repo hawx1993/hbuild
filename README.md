@@ -21,7 +21,7 @@ Hbuild使用基于vue-cli的命令行工具，全局注册后可快速生成项�
 - Support for building multi-page applications
 - offline mode support
 
-其中zepto是默认全局引入的，可直接使用。默认支持Babel转码。支持HMR
+其中zepto是默认全局引入的，可直接使用。h5项目默认引入ejs模板引擎。默认支持Babel转码。支持HMR
     
     
 ### Get Started

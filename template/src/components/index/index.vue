@@ -4,6 +4,7 @@
         {{#vuex}}
         <counter></counter>
         {{/vuex}}
+        <p>copyright reserved by \{{ items.userName}}</p>
     </div>
 </template>
 {{#if_eq preProcessor 'SASS'}}
@@ -26,13 +27,27 @@
 <script>
     {{#vuex}}
     import Counter from 'components/counter/index.vue'
+
     {{/vuex}}
+    import util from 'common/js/util'
+    import Api from 'common/js/api'
     export default {
         data(){
             return {
-                msg: 'hello,hbuild'
+                msg: 'hello,hbuild',
+                items: {}
             }
-        }{{#vuex}},
+        },
+        mounted(){
+            let that = this;
+            util.ajax({
+                url: Api.queryItemList
+            },(data)=>{
+                let items = data.result.items;
+                that.items = items;
+            })
+        }
+        {{#vuex}},
         components: {
             Counter
         }{{/vuex}}

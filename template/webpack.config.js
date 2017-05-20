@@ -42,6 +42,7 @@ module.exports = {
         alias: {
             '@': resolve(config.src),
             'components': resolve(config.src,config.components),
+            'common': resolve(config.src,config.common),
             'lib': resolve(config.src,config.lib){{#if_eq project 'vue'}},
             'vue': 'vue/dist/vue.js',
             //防止运行时出现构建问题

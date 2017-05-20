@@ -19,6 +19,7 @@ const config = require('./hbuild.config');
 const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin');
 const webpackConfig = require('./webpack.config');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const StringReplacePlugin = require("string-replace-webpack-plugin");
 
 let myConfig = Object.create(webpackConfig);
 
@@ -30,17 +31,33 @@ const getEnvironment = () => {
         argv = process.argv.pop();
     switch (argv) {
         case '--dev':
+            env = {
+                dev: true, environment: 0
+            };
+            break;
         case '--dev-daily':
+            env = {
+                dev: true, environment: 1
+            };
+            break;
         case '--dev-pre':
             env = {
-                dev: true
+                dev: true, environment: 2
             };
             break;
         case '--daily':
+            env = {
+                dev: false, environment: 1
+            };
+            break;
         case '--pre':
+            env = {
+                dev: false, environment: 2
+            };
+            break;
         case '--prod':
             env = {
-                dev: false
+                dev: false, environment: 3
             }
     }
     return env;
@@ -69,7 +86,7 @@ gulp.task("html", ()=> {
     if (args.dev) {
         return gulp.src([resolve('src','pages')+'/*/+([^\.]).html'])
             .pipe(ejs())
-            .pipe(replace(/\$\$_CDNPATH_\$\$/g, '/static'))
+            .pipe(replace(/\$\$_CDNPATH_\$\$/g, '../static'))
             .pipe(rename(function(path) {
                 path.basename = path.dirname;
                 path.dirname = "";
@@ -104,11 +121,32 @@ gulp.task("watch", ["html"], ()=> {
 
 gulp.task("webpack", ()=> {
     let sourceMap = config.style.sourceMap;
+    let rules = webpackConfig.module.rules;
+    let plugins = webpackConfig.plugins;
+    let replacements = config.replacement;
+    let rep = replacements.map((val)=>{
+        return {
+            pattern: val.pattern,
+            replacement: function () {
+                return val.replace(args)
+            }
+        }
+    });
+    rules.push({
+        test: /\.jsx?$/,
+        include: [path.join(__dirname, 'src')],
+        loader: StringReplacePlugin.replace({
+            replacements: rep
+        })
+    });
+    plugins.push(
+        new StringReplacePlugin()
+    );
 
     function getCssLoaders() {
         let cssProcessors = [
             {{#if_eq preProcessor 'SASS'}}
-            {loader: 'sass-loader?', test: /\.scss$/}{{/if_eq}}{{#if_eq preProcessor 'LESS'}},
+            {loader: 'sass-loader?', test: /\.scss$/},{{/if_eq}}{{#if_eq preProcessor 'LESS'}}
             {loader: 'less-loader?', test: /\.less$/}
             {{/if_eq}}
         ];
@@ -176,7 +214,6 @@ gulp.task("webpack", ()=> {
     }
 
     getCssLoaders();
-
 
     //线上环境
     if (!args.dev) {
@@ -295,6 +332,9 @@ gulp.task('server', ['build'], ()=> {
         },
         livereload: true
     });
+    if(config.open){
+        require('opn')(`http://${config.host}:${config.port}`)
+    }
 });
 //eslint
 gulp.task('eslint', ()=> {

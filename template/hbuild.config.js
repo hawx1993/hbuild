@@ -17,11 +17,12 @@ module.exports = {
     pages:  'pages',
     components:'components',
     //hostname
-    host: 'http://h5.dev.weidian.com',
+    host: 'localhost',
     //编译输出目录
     buildPath: 'build',
     staticPath: 'static',
-    //
+    //是否自动打开浏览器
+    open: true,
     sourceMap: true,
     //样式配置
     style: {
@@ -30,10 +31,27 @@ module.exports = {
         extractFileName: '[name].extract.css'//文件名
     },
     //需要根据环境替换的变量
-    replacements: [
+    replacement: [
         {
-            pattern: '/\$\$_APIURL_\$\$/ig',
-            replacement: function (args) {
+            pattern: /\$\$_APIURL_\$\$/g,
+            replace: function (args) {
+                if(args.environment ===0){
+                    return '/mock'
+                    //日常
+                }else if(args.environment ===1){
+                    return '//host.daily.domain.com'
+                    //预发
+                }else if(args.environment ===2){
+                    return '//host.pre.domain.com'
+                    //线上
+                }else if(args.environment ===3){
+                    return '//host.domain.com'
+                }
+            }
+        },
+        {
+            pattern: /\$\$_TESTURL_\$\$/g,
+            replace: function (args) {
                 if(args.environment ===0){
                     return '/mock'
                     //日常
