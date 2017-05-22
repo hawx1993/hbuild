@@ -89,6 +89,13 @@ module.exports = {
             Vue: ['vue/dist/vue.esm.js', 'default'],{{/if_eq}}
             $: 'zepto-webpack'
         }),
+        new webpack.LoaderOptionsPlugin({
+            options: {
+                postcss: [
+                    autoprefixer(),
+                ]
+            }
+        }),
         new webpack.optimize.CommonsChunkPlugin('common')
     ]
 }

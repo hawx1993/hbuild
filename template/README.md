@@ -1,5 +1,5 @@
 
-### About Hbuild
+### <p align='center'>About Hbuild</p>
 
 <p align="center">
   <img src="http://chuantu.biz/t5/92/1495463272x1822614086.png" alt="vuepack" width="60">
@@ -95,8 +95,12 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 
 3.支持 屏幕适配方案，采用`media-query+rem`的方式，默认在`common.less`文件中
 
+4.支持postcss和`autoprefixer`
+
 ### 其他
 
+- mock：mock 数据只需要接口URI路径和mock目录保持一致即可
+- 接口：接口如需根据环境来替换，需在`hbuild.config.js`文件和`common/js/config`文件进行配置
 - 支持多入口文件，可在pages下新建目录，文件名需以index开头
 
 - 字符串替换：`$$_CDNPATH_$$`会被编译替换为`build/static/hash串`目录
