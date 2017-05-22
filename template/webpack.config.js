@@ -31,7 +31,6 @@ entryFilesArray.forEach(function(file){
 module.exports = {
     entry: entryFiles,
     output: {
-        path: resolve(config.buildPath,config.staticPath),
         publicPath: '/'+config.staticPath,
         filename: '[name].js',
         hotUpdateChunkFilename: 'hot/hot-update.js',
