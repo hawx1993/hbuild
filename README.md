@@ -77,14 +77,19 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 ### 编译
 
 1.js代码默认采用Babel编译，webpack打包构建。
+
 2.编译后的html文件默认输出到`build/pages`目录下，html文件名采用其在`src/pages`下的父级目录的文件名
+
 3.编译后的静态资源文件（图片，字体，js文件等）存放到`build/static`目录下，编译支持文件hash，解决缓存问题
+
 4.支持代码热替换，热替换失败会自动刷新整个页面
 
 ### HTML
 
 1.h5项目的页面默认采用ejs模板引擎和zepto，可直接使用。
+
 2.当你执行发布线上的命令时，html和js代码会被压缩
+
 3.当你在pages下新建一个目录时，html文件需要手动配置一下静态资源的引用
 
 ### CSS
@@ -100,7 +105,9 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 ### 其他
 
 - mock：mock 数据只需要接口URI路径和mock目录保持一致即可
+
 - 接口：接口如需根据环境来替换，需在`hbuild.config.js`文件和`common/js/config`文件进行配置
+
 - 支持多入口文件，可在pages下新建目录，文件名需以index开头
 
 - 字符串替换：`$$_CDNPATH_$$`会被编译替换为`build/static/hash串`目录
@@ -108,6 +115,7 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 - 入口文件：脚手架默认会读取pages目录下的index开头的js文件为入口文件，名称是写死的
 
 - 修改默认文件夹的名称，需要在`hbuild.config.js`文件就对应文件变量做修改
+
 - 提取CSS以及sourceMap功能只在非开发模式下进行。
 
 

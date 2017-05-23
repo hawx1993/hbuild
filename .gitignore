@@ -4,3 +4,4 @@ dist/
 app.yaml
 *.log
 build
+.idea
