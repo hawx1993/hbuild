@@ -26,7 +26,8 @@ const MYCONFIG = Object.create(webpackConfig);
 
 let util = {
     getHash() {
-        let md5 = crypto.createHash('md5'),
+        const secret = 'hbuild';
+        let md5 = crypto.createHash('md5',secret),
             date = new Date(),
             str = date.getTime().toString(),
             hash;
@@ -38,7 +39,8 @@ let util = {
     getEnvironment() {
         let env = {
                 //是否是开发环境
-                dev: false
+                dev: false,
+                environment: 3
             },
             argv = process.argv.pop();
         switch (argv) {
@@ -211,20 +213,16 @@ gulp.task("webpack", ()=> {
             }else{
                 rules.push(
                     {{#if_eq preProcessor 'LESS'}}
-                {
-                    test: /\.less$/,
-                    loaders: ['style-loader', 'css-loader', 'less-loader']
-                },{{/if_eq}}
-                {{#if_eq preProcessor 'SASS'}}
-                {
-                    test: /\.scss$/,
-                    loaders: ['style-loader', 'css-loader', 'sass-loader']
-                },{{/if_eq}}
-                {
-                    test: /\.css/,
-                    loaders: [ 'style-loader', 'css-loader' ]
-                }
-            )
+                    {
+                        test: /\.css$|\.less$/,
+                        loaders: ['style-loader','css-loader','less-loader']
+                    }{{/if_eq}}
+                    {{#if_eq preProcessor 'SASS'}},
+                    {
+                        test:  /\.css$|\.scss$/,
+                        loaders: ['style-loader', 'css-loader', 'sass-loader']
+                    }{{/if_eq}}
+                )
         }
     })();
 
