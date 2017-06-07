@@ -20,6 +20,7 @@ entryFilesArray.forEach(function(file){
     if(state.isDirectory(file)){
         let dirname = path.basename(file);
         entryFiles[dirname+'/index'] = [
+            'webpack-hot-middleware/client?reload=true',
             {{#if_eq project 'react'}}
             path.join(__dirname,config.src,config.pages ,dirname , 'index.jsx')
             {{else}}

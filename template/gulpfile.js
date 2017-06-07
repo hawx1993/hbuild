@@ -302,16 +302,11 @@ gulp.task('build', (cb)=> {
 //启动本地服务器及mock server
 gulp.task('server', ['build'], ()=> {
     let compiler;
-    let hotMiddleString = 'webpack-hot-middleware/client?reload=true';
     try {
         compiler = webpack(webpackConfig)
     } catch (err) {
         console.log(err.message);
         process.exit(1)
-    }
-
-    for(let file in webpackConfig.entry){
-        webpackConfig.entry[file].unshift(hotMiddleString)
     }
     const app = express();
     const devMiddleWare = require('webpack-dev-middleware')(compiler, {
