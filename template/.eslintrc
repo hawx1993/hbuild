@@ -1,6 +1,35 @@
 {
+    "parser": "babel-eslint", {{#if_eq project 'vue'}}
+    "plugins": ["vue"],{{/if_eq}}
+    "env": {
+        "browser": true,
+        "node": true,
+        "es6": true
+    },
     "rules": {
-        "import/no-unresolved": 0,
-        "import/no-unassigned-import": 0
+        //警告
+        "no-empty-function":1,
+        "no-script-url":1,
+        "no-unused-vars":1,
+        "no-extra-parens":1,
+        "no-unreachable": 1,
+        "eqeqeq": 1,
+        "no-redeclare": 1,
+        "no-with": 1,
+        "new-cap": 1,
+        "no-duplicate-imports": 1,
+        "no-console":1,
+        //错误
+        "no-restricted-globals":2,
+        "no-use-before-define":2,
+        "no-void":2,
+        "no-caller":2,
+        "no-alert":2,
+        "no-eval":2,
+        "no-debugger": 2,
+        "no-delete-var": 2,
+        "no-constant-condition":2,
+        "no-dupe-args": 2,
+        "no-undefined": 2
     }
 }

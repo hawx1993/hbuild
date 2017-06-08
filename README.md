@@ -102,6 +102,10 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 
 4.支持postcss和`autoprefixer`
 
+### 代码检查
+
+1.npm run eslint 支持检查vue单文件组件，支持es6语法检查
+
 ### 其他
 
 - mock：mock 数据只需要接口URI路径和mock目录保持一致即可

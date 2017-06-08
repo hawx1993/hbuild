@@ -12,7 +12,6 @@ const htmlmin = require("gulp-htmlmin");
 const gulpSequence = require('gulp-sequence');
 const connect = require('gulp-connect');
 const eslint = require('gulp-eslint');
-const named = require('vinyl-named');
 const rename = require('gulp-rename');
 const webpack = require('webpack');
 const express = require('express');
@@ -293,7 +292,7 @@ taskName !== 'dev' && gulp.task(taskName, ()=> {
 
 gulp.task('build', (cb)=> {
     if (args.dev) {
-        gulpSequence('clean', 'html', 'assets', 'watch','webpack', cb);
+        gulpSequence('clean', 'webpack','html', 'assets', 'watch', cb);
     } else {
         gulpSequence('clean', 'webpack', 'html', 'assets', cb);
     }
@@ -301,13 +300,7 @@ gulp.task('build', (cb)=> {
 
 //启动本地服务器及mock server
 gulp.task('server', ['build'], ()=> {
-    let compiler;
-    try {
-        compiler = webpack(webpackConfig)
-    } catch (err) {
-        console.log(err.message);
-        process.exit(1)
-    }
+    let compiler = webpack(webpackConfig);
     const app = express();
     const devMiddleWare = require('webpack-dev-middleware')(compiler, {
         publicPath: webpackConfig.output.publicPath,

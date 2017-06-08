@@ -13,9 +13,7 @@
         text-align: center;
         font-size: 20px;
     }
-</style>
-{{/if_eq}}
-{{#if_eq preProcessor 'LESS'}}
+</style>{{/if_eq}}{{#if_eq preProcessor 'LESS'}}
 <style lang="less" scoped>
     .page{
         text-align: center;
@@ -23,12 +21,9 @@
     }
 </style>
 {{/if_eq}}
-
 <script>
     {{#vuex}}
-    import Counter from 'components/counter/index.vue'
-
-    {{/vuex}}
+    import Counter from 'components/counter/index.vue'{{/vuex}}
     import util from 'common/js/util'
     import Api from 'common/js/api'
     export default {
