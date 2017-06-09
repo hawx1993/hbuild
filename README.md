@@ -92,9 +92,9 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 
 3.当你在pages下新建一个目录时，html文件需要手动配置一下静态资源的引用
 
-### CSS
+### CSS和预处理器
 
-1.支持css预处理器LESS和SASS，后续逐步支持其他css处理器
+1.支持css预处理器LESS、SASS和stylus [optional];
 
 2.默认采用`css-in-js`的方式，可在`hbuild.config.js`文件中配置是否单独提取css，提取出的css文件名称默认为：`[name].extract.css`
 
@@ -172,6 +172,8 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 
 
 ### ChangeLog
+
+1.新增mustache模板引擎支持，新增stylus预处理器支持，bug fixed --2017/6/9 18:30
 
 
 
