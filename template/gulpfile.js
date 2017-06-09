@@ -41,7 +41,7 @@ let util = {
                 dev: false,
                 environment: 3
             },
-            argv = process.argv.pop();
+            argv = process.argv.pop() || '--dev';
         switch (argv) {
             case '--dev':
                 env = {
@@ -80,9 +80,7 @@ let hash = util.getHash();
 let args = util.getEnvironment();
 
 function resolve(arg1,arg2,arg3) {
-    let dir1 = arg1 || '', dir2 = arg2 || '',
-        dir3 = arg3 || '';
-    return path.join(config[dir1],config[dir2],dir3)
+    return path.join(config[arg1],config[arg2]||'',arg3||'')
 }
 gulp.task("clean", ()=> {
     if (!config.buildPath) return null;
@@ -165,68 +163,79 @@ gulp.task("webpack", ()=> {
     );
     webpackConfig.output.path = path.join(__dirname,config.buildPath,
         config.staticPath,hash);
-    (function () {
-            let cssProcessors = [
-                {{#if_eq preProcessor 'SASS'}}
-                {loader: 'sass-loader?', test: /\.scss$/}{{else}}
-                {loader: 'less-loader?', test: /\.less$/}
-                {{/if_eq}}
-            ];
+    let cssProcessors = [
+        {{#if_eq preProcessor 'SASS'}}
+    {loader: 'sass-loader?', test: /\.scss$/}{{else}}
+    {loader: 'less-loader?', test: /\.less$/}
+    {{/if_eq}}
+    ];
 
-            if(config.style.extract && !args.dev){
-                cssProcessors.forEach(processor => {
-                    if(!processor.loader.indexOf('less-loader')){
-                        rules.push({
-                            test: processor.test,
-                            use: ExtractTextPlugin.extract({
-                                use: [{
-                                    loader: 'css-loader',options:{
-                                        sourceMap: sourceMap
-                                    }
-                                },{
-                                    loader: 'less-loader',options:{
-                                        sourceMap: sourceMap
-                                    }
-                                }]
-                            })
-                        });
-                        plugins.push(new ExtractTextPlugin(extractFile))
-                    }else if(!processor.loader.indexOf('sass-loader')){
-                        rules.push({
-                            test: processor.test,
-                            use: ExtractTextPlugin.extract({
-                                use: [{
-                                    loader: 'css-loader',options:{
-                                        sourceMap: sourceMap
-                                    }
-                                },{
-                                    loader: 'sass-loader',options:{
-                                        sourceMap: sourceMap
-                                    }
-                                }]
-                            })
-                        });
-                        plugins.push(new ExtractTextPlugin(extractFile))
-                    }
+    if(config.style.extract && !args.dev){
+        cssProcessors.forEach(processor => {
+            if(!processor.loader.indexOf('less-loader')){
+                rules.push({
+                    test: processor.test,
+                    use: ExtractTextPlugin.extract({
+                        use: [{
+                            loader: 'css-loader',options:{
+                                sourceMap: sourceMap
+                            }
+                        },{
+                            loader: 'less-loader',options:{
+                                sourceMap: sourceMap
+                            }
+                        }]
+                    })
                 });
-            }else{
-                rules.push(
-                    {{#if_eq preProcessor 'LESS'}}
-                    {
-                        test: /\.css$|\.less$/,
-                        loaders: ['style-loader','css-loader','less-loader']
-                    }{{/if_eq}}
-                    {{#if_eq preProcessor 'SASS'}},
-                    {
-                        test:  /\.css$|\.scss$/,
-                        loaders: ['style-loader', 'css-loader', 'sass-loader']
-                    }{{/if_eq}}
-                )
+                plugins.push(new ExtractTextPlugin(extractFile))
+            }else if(!processor.loader.indexOf('sass-loader')){
+                rules.push({
+                    test: processor.test,
+                    use: ExtractTextPlugin.extract({
+                        use: [{
+                            loader: 'css-loader',options:{
+                                sourceMap: sourceMap
+                            }
+                        },{
+                            loader: 'sass-loader',options:{
+                                sourceMap: sourceMap
+                            }
+                        }]
+                    })
+                });
+                plugins.push(new ExtractTextPlugin(extractFile))
+            }
+        });
+    }else{
+        rules.push(
+            {{#if_eq preProcessor 'LESS'}}
+            {
+                test: /\.css$|\.less$/,
+                loaders: ['style-loader','css-loader','less-loader']
+            }{{/if_eq}}
+            {{#if_eq preProcessor 'SASS'}},
+            {
+                test:  /\.css$|\.scss$/,
+                loaders: ['style-loader', 'css-loader', 'sass-loader']
+            }{{/if_eq}}
+        )
+    }
+    //开发环境
+    if (args.dev) {
+        let hotMiddlewareScript = 'webpack-hot-middleware/client?reload=true';
+        for(let k in webpackConfig.entry){
+            webpackConfig.entry[k].unshift(hotMiddlewareScript)
         }
-    })();
-
+        webpackConfig.plugins.push(
+            new webpack.DefinePlugin({
+                'process.env': {
+                    'NODE_ENV': '"development"'
+                }
+            }),
+            new webpack.HotModuleReplacementPlugin()
+        )
     //线上环境
-    if (!args.dev) {
+    }else {
         //开发过程无需打开sourcemap
         let webpackSourceMap = config.sourceMap;
         if(webpackSourceMap){
@@ -250,15 +259,6 @@ gulp.task("webpack", ()=> {
                 }
             })
         );
-    }else {
-        webpackConfig.plugins.push(
-            new webpack.DefinePlugin({
-                'process.env': {
-                    'NODE_ENV': '"development"'
-                }
-            }),
-            new webpack.HotModuleReplacementPlugin()
-        )
     }
     let compiler = webpack(MYCONFIG);
 
