@@ -10,53 +10,73 @@
     </div>
 </template>
 {{#if_eq preProcessor 'LESS'}}
-    <style lang="less" rel="stylesheet/less" scoped>
-        .counter-wrapper{
-            .counter {
-                margin: 100px auto;
-                border-radius: 3px;
-                width: 200px;
-                height: 200px;
-                text-align: center;
-                line-height: 200px;
-                font-size: 5rem;
-                background-color: #f0f0f0;
-                user-select: none;
-            }
-            .btn{
-                margin: 0 auto;
-                display: table;
+<style lang="less" rel="stylesheet/less" scoped>
+    .counter-wrapper{
+        .counter {
+            margin: 100px auto;
+            border-radius: 3px;
+            width: 200px;
+            height: 200px;
+            text-align: center;
+            line-height: 200px;
+            font-size: 5rem;
+            background-color: #f0f0f0;
+            user-select: none;
+        }
+        .btn{
+            margin: 0 auto;
+            display: table;
             button{
-                    margin-left: 10px;
-                }
+                margin-left: 10px;
             }
         }
-    </style>
+    }
+</style>
 {{/if_eq}}
 
 {{#if_eq preProcessor 'SASS'}}
-    <style lang="scss" scoped>
-        .counter-wrapper{
-            .counter {
-                margin: 100px auto;
-                border-radius: 3px;
-                width: 200px;
-                height: 200px;
-                text-align: center;
-                line-height: 200px;
-                font-size: 5rem;
-                background-color: #f0f0f0;
-                user-select: none;
-            }
-            .btn{
-                margin: 0 auto;
-                display: table;
+<style lang="scss" scoped>
+    .counter-wrapper{
+        .counter {
+            margin: 100px auto;
+            border-radius: 3px;
+            width: 200px;
+            height: 200px;
+            text-align: center;
+            line-height: 200px;
+            font-size: 5rem;
+            background-color: #f0f0f0;
+            user-select: none;
+        }
+        .btn{
+            margin: 0 auto;
+            display: table;
             button{
-                    margin-left: 10px;
-                }
+                margin-left: 10px;
             }
         }
-    </style>
+    }
+</style>
+{{/if_eq}}
+{{#if_eq preProcessor 'stylus'}}
+<style lang="stylus" scoped>
+    .counter-wrapper
+      .counter
+        margin 100px auto
+        border-radius 3px
+        width 200px
+        height 200px
+        text-align center
+        line-height 200px
+        font-size 5rem
+        background-color #f0f0f0
+        user-select none
+      .btn
+        margin 0 auto
+        display table
+        button
+          margin-left 10px
+</style>
 {{/if_eq}}
 <script>
     export default {

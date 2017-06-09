@@ -46,8 +46,8 @@
         "babel-preset-es2015": "^6.24.1",{{#if_eq project 'react'}}
         "babel-preset-react": "^6.24.1",{{/if_eq}}
         "css-loader": "^0.28.1",
-        "del": "^2.2.2",
-        "ejs-template-loader": "^2.0.0",
+        "del": "^2.2.2",{{#if_eq project 'h5'}}
+        "ejs-template-loader": "^2.0.0",{{/if_eq}}
         "express": "^4.15.2",
         "extract-text-webpack-plugin": "^2.1.0",
         "file-loader": "^0.11.1",
@@ -61,7 +61,8 @@
         "gulp-replace": "^0.5.4",
         "gulp-sequence": "^0.4.6",{{#if_eq preProcessor 'LESS'}}
         "less": "^2.7.2",
-        "less-loader": "^4.0.3",{{/if_eq}}
+        "less-loader": "^4.0.3",{{/if_eq}}{{#if_eq template 'mustache'}}
+        "mustache-loader": "^0.4.1",{{/if_eq}}
         "opn": "^5.0.0",{{#if_eq preProcessor 'SASS'}}
         "node-sass": "^4.5.2",
         "sass-loader": "^6.0.5",{{/if_eq}}
@@ -70,7 +71,9 @@
         "react": "^15.5.4",
         "react-dom": "^15.5.4",
         "react-hot-loader": "next",{{/if_eq}}
-        "style-loader": "^0.17.0",
+        "style-loader": "^0.17.0",{{#if_eq preProcessor 'stylus'}}
+        "stylus": "^0.54.5",
+        "stylus-loader": "^3.0.1",{{/if_eq}}
         "url-loader": "^0.5.8",{{#if_eq project 'vue'}}
         "vue-loader": "^12.0.3",
         "vue-router": "^2.5.3",{{/if_eq}}

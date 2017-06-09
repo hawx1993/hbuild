@@ -17,19 +17,25 @@
         },
         "project": {
             "type": "list",
-            "message": "Choose Your Project Type",
+            "message": "Choose your project type",
             "choices": ["h5","vue","react"]
+        },
+        "template": {
+            "when": "project =='h5'",
+            "type": "list",
+            "message": "Choose your template",
+            "choices": ["ejs","mustache"]
         },
         "vuex": {
             "when": "project=='vue'",
             "type": "confirm",
-            "message": "Use vuex in Your project?",
+            "message": "Use vuex in your project?",
             "default": true
         },
         "preProcessor": {
             "type": "list",
-            "message": "Choose CSS Pre-Processor?",
-            "choices": ["LESS","SASS"]
+            "message": "Choose css pre-processor?",
+            "choices": ["LESS","SASS","stylus"]
         }
     },
     "filters": {
@@ -44,7 +50,8 @@
         "src/common/css/*.scss": "preProcessor == 'SASS'",
         "src/pages/index/*.jsx": "project == 'react' ",
         "src/pages/index/*.js": "project !=='react'",
-        "src/pages/index/module/*.jsx": "project == 'react'"
+        "src/pages/index/module/*.jsx": "project == 'react'",
+        "src/pages/index/*.styl": "preProcessor =='stylus' && project =='h5'"
     },
     "completeMessage":"To get started:\n\n  cd   {{destDirName}}\n  npm i || yarn\n  npm run dev"
 }

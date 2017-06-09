@@ -21,6 +21,8 @@ module.exports = {
     //编译输出目录
     buildPath: 'build',
     staticPath: 'static',
+    //图片字体等输出路径
+    buildAssets: 'assets',
     //是否自动打开浏览器
     open: true,
     sourceMap: true,

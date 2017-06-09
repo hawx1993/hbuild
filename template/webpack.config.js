@@ -37,7 +37,7 @@ module.exports = {
         hotUpdateMainFilename: 'hot/hot-update.json'
     },
     resolve: {
-        extensions: ['.js', '.vue', '.json','.less', '.scss', '.css','jsx'],
+        extensions: ['.js', '.vue', '.json','.less', '.scss','styl','.css','jsx'],
         alias: {
             '@': resolve(config.src),
             'components': resolve(config.src,config.components),
@@ -66,10 +66,16 @@ module.exports = {
                 include: resolve(config.src),
                 loader: 'babel-loader?cacheDirectory'
             },
+            {{#if_eq template 'ejs'}}
             {
                 test: /\.html$/,
                 loader: "ejs-template-loader"
-            },
+            },{{/if_eq}}
+            {{#if_eq template 'mustache'}}
+            {
+                test: /\.html$/,
+                loader: 'mustache-loader'
+            },{{/if_eq}}
             {
                 test: /\.json$/,
                 use: 'json-loader'
@@ -85,16 +91,9 @@ module.exports = {
         new webpack.NoEmitOnErrorsPlugin(),
         //提供全局对象
         new webpack.ProvidePlugin({
+            $: 'zepto-webpack',
             {{#if_eq project 'vue'}}
             Vue: ['vue/dist/vue.esm.js', 'default'],{{/if_eq}}
-            $: 'zepto-webpack'
-        }),
-        new webpack.LoaderOptionsPlugin({
-            options: {
-                postcss: [
-                    autoprefixer(),
-                ]
-            }
         }),
         new webpack.optimize.CommonsChunkPlugin('common')
     ]

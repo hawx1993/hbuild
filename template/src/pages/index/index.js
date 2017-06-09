@@ -10,6 +10,9 @@ import './index.less';
 import '../../common/css/common.scss';
 import './index.scss';
 {{/if_eq}}
+{{#if_eq preProcessor 'stylus'}}
+import './index.styl';
+{{/if_eq}}
 import mainTpl from './module/main.tpl.html'
 import util from '../../common/js/util';
 import Api from '../../common/js/api';
@@ -28,8 +31,6 @@ class Index {
                 data: items
             }));
         })
-
-
     }
 }
 new Index();

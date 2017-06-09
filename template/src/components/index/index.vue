@@ -20,6 +20,12 @@
         font-size: 20px;
     }
 </style>
+{{/if_eq}}{{#if_eq preProcessor 'stylus'}}
+<style lang="stylus" scoped>
+    .page
+      text-align center
+      font-size 20px
+</style>
 {{/if_eq}}
 <script>
     {{#vuex}}

@@ -79,8 +79,8 @@ let util = {
 let hash = util.getHash();
 let args = util.getEnvironment();
 
-function resolve(arg1,arg2,arg3) {
-    return path.join(config[arg1],config[arg2]||'',arg3||'')
+function resolve(arg1,arg2,arg3,arg4) {
+    return path.join(config[arg1],config[arg2]||'',arg3||'',config[arg4]||'')
 }
 gulp.task("clean", ()=> {
     if (!config.buildPath) return null;
@@ -90,7 +90,7 @@ gulp.task("clean", ()=> {
 
 gulp.task("assets", ()=> {
     return gulp.src([resolve('src','assets')+'/*.+(ico|png|jpeg|jpg|gif|eot|svg|ttf|woff)'])
-        .pipe(gulp.dest(resolve('buildPath','staticPath',hash)))
+        .pipe(gulp.dest(resolve('buildPath','staticPath',hash,'buildAssets')))
         .pipe(connect.reload());
 
 });
@@ -213,10 +213,15 @@ gulp.task("webpack", ()=> {
                 test: /\.css$|\.less$/,
                 loaders: ['style-loader','css-loader','less-loader']
             }{{/if_eq}}
-            {{#if_eq preProcessor 'SASS'}},
+            {{#if_eq preProcessor 'SASS'}}
             {
                 test:  /\.css$|\.scss$/,
                 loaders: ['style-loader', 'css-loader', 'sass-loader']
+            }{{/if_eq}}
+            {{#if_eq preProcessor 'stylus'}}
+            {
+                test: /\.styl$/,
+                use: ['style-loader', 'css-loader', 'stylus-loader']
             }{{/if_eq}}
         )
     }

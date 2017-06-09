@@ -84,9 +84,9 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 
 4.支持代码热替换，热替换失败会自动刷新整个页面
 
-### HTML
+### HTML和模板引擎
 
-1.h5项目的页面默认采用ejs模板引擎和zepto，可直接使用。
+1.h5项目支持ejs 和 mustache模板引擎，默认支持zepto，可直接使用。
 
 2.当你执行发布线上的命令时，html和js代码会被压缩
 
@@ -169,6 +169,9 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 ├── webpack.config.js
 └── yarn.lock
 ```
+
+
+### ChangeLog
 
 
 

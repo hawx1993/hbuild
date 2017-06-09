@@ -11,7 +11,7 @@ class App extends Component {
     }
     render() {
         return (
-            <div>
+            <div className="center-box">
                 <div>hello,hbuild :: {this.state.name}</div>
                 <p>build for react demo</p>
             </div>
