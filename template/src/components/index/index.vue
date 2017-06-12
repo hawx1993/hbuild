@@ -27,6 +27,7 @@
       font-size 20px
 </style>
 {{/if_eq}}
+
 <script>
     {{#vuex}}
     import Counter from 'components/counter/index.vue'{{/vuex}}

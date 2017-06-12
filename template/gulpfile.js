@@ -99,6 +99,7 @@ gulp.task("html", ()=> {
         return gulp.src([resolve('src','pages')+'/*/+([^\.]).html'])
             .pipe(ejs())
             .pipe(replace(/\$\$_CDNPATH_\$\$/g, resolve('staticPath','',hash)))
+            .pipe(replace(/\$\$_STATICPATH_\$\$/g,resolve('staticPath','',hash,'buildAssets')))
             .pipe(rename(function(path) {
                 path.basename = path.dirname;
                 path.dirname = "";
@@ -108,6 +109,7 @@ gulp.task("html", ()=> {
         return gulp.src([resolve('src','pages')+'/*/+([^\.]).html'])
             .pipe(ejs())
             .pipe(replace(/\$\$_CDNPATH_\$\$/g, '../'+resolve('staticPath','',hash)))
+            .pipe(replace(/\$\$_STATICPATH_\$\$/g,resolve('staticPath','',hash,'buildAssets')))
             .pipe(htmlmin({
                 minifyJS: true,
                 minifyCSS: true,
@@ -165,9 +167,9 @@ gulp.task("webpack", ()=> {
         config.staticPath,hash);
     let cssProcessors = [
         {{#if_eq preProcessor 'SASS'}}
-    {loader: 'sass-loader?', test: /\.scss$/}{{else}}
-    {loader: 'less-loader?', test: /\.less$/}
-    {{/if_eq}}
+            {loader: 'sass-loader?', test: /\.scss$/}{{else}}
+            {loader: 'less-loader?', test: /\.less$/}
+        {{/if_eq}}
     ];
 
     if(config.style.extract && !args.dev){
