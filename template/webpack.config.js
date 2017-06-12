@@ -68,7 +68,7 @@ module.exports = {
             },
             {{#if_eq template 'ejs'}}
             {
-                test: /\.(tpl|.html)$/,
+                test: /\.(tpl|html)$/,
                 loader: "ejs-template-loader"
             },{{/if_eq}}
             {{#if_eq template 'mustache'}}

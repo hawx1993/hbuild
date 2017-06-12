@@ -109,7 +109,7 @@ gulp.task("html", ()=> {
         return gulp.src([resolve('src','pages')+'/*/+([^\.]).html'])
             .pipe(ejs())
             .pipe(replace(/\$\$_CDNPATH_\$\$/g, '../'+resolve('staticPath','',hash)))
-            .pipe(replace(/\$\$_STATICPATH_\$\$/g,resolve('staticPath','',hash,'buildAssets')))
+            .pipe(replace(/\$\$_STATICPATH_\$\$/g,'../'+resolve('staticPath','',hash,'buildAssets')))
             .pipe(htmlmin({
                 minifyJS: true,
                 minifyCSS: true,
