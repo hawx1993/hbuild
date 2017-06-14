@@ -21,7 +21,7 @@ const webpackConfig = require('./webpack.config');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const StringReplacePlugin = require("string-replace-webpack-plugin");
 
-const MYCONFIG = Object.create(webpackConfig);
+const NEW_CONFIG = Object.create(webpackConfig);
 
 let util = {
     getHash() {
@@ -37,11 +37,9 @@ let util = {
     },
     getEnvironment() {
         let env = {
-                //是否是开发环境
-                dev: false,
-                environment: 3
-            },
-            argv = process.argv.pop() || '--dev';
+            //是否是开发环境
+            dev: false, environment: 3
+        }, argv = process.argv.pop() || '--dev';
         switch (argv) {
             case '--dev':
                 env = {
@@ -79,8 +77,13 @@ let util = {
 let hash = util.getHash();
 let args = util.getEnvironment();
 
-function resolve(arg1,arg2,arg3,arg4) {
-    return path.join(config[arg1],config[arg2]||'',arg3||'',config[arg4]||'')
+function resolve(...dirname) {
+    let buildDir ,pathArray = [];
+    for(let val of dirname){
+        buildDir = !config[val] ? val || '' : config[val];
+        pathArray.push(buildDir)
+    }
+    return path.join(...pathArray);
 }
 gulp.task("clean", ()=> {
     if (!config.buildPath) return null;
@@ -92,14 +95,13 @@ gulp.task("assets", ()=> {
     return gulp.src([resolve('src','assets')+'/*.+(ico|png|jpeg|jpg|gif|eot|svg|ttf|woff)'])
         .pipe(gulp.dest(resolve('buildPath','staticPath',hash,'buildAssets')))
         .pipe(connect.reload());
-
 });
 gulp.task("html", ()=> {
     if (args.dev) {
         return gulp.src([resolve('src','pages')+'/*/+([^\.]).html'])
             .pipe(ejs())
-            .pipe(replace(/\$\$_CDNPATH_\$\$/g, resolve('staticPath','',hash)))
-            .pipe(replace(/\$\$_STATICPATH_\$\$/g,resolve('staticPath','',hash,'buildAssets')))
+            .pipe(replace(/\$\$_CDNPATH_\$\$/g, resolve('staticPath',hash)))
+            .pipe(replace(/\$\$_STATICPATH_\$\$/g,resolve('staticPath',hash,'buildAssets')))
             .pipe(rename(function(path) {
                 path.basename = path.dirname;
                 path.dirname = "";
@@ -108,8 +110,8 @@ gulp.task("html", ()=> {
     } else {
         return gulp.src([resolve('src','pages')+'/*/+([^\.]).html'])
             .pipe(ejs())
-            .pipe(replace(/\$\$_CDNPATH_\$\$/g, '../'+resolve('staticPath','',hash)))
-            .pipe(replace(/\$\$_STATICPATH_\$\$/g,'../'+resolve('staticPath','',hash,'buildAssets')))
+            .pipe(replace(/\$\$_CDNPATH_\$\$/g, '../'+resolve('staticPath',hash)))
+            .pipe(replace(/\$\$_STATICPATH_\$\$/g,'../'+resolve('staticPath',hash,'buildAssets')))
             .pipe(htmlmin({
                 minifyJS: true,
                 minifyCSS: true,
@@ -145,7 +147,7 @@ gulp.task("webpack", ()=> {
     let rules = webpackConfig.module.rules;
     let plugins = webpackConfig.plugins;
     let replacements = config.replacement;
-    let rep = replacements.map((val)=>{
+    let replacedValue = replacements.map((val)=>{
         return {
             pattern: val.pattern,
             replacement: function () {
@@ -155,15 +157,15 @@ gulp.task("webpack", ()=> {
     });
     rules.push({
         test: /\.jsx?$/,
-        include: [path.join(__dirname, 'src')],
+        include: resolve(__dirname, 'src'),
         loader: StringReplacePlugin.replace({
-            replacements: rep
+            replacements: replacedValue
         })
     });
     plugins.push(
         new StringReplacePlugin()
     );
-    webpackConfig.output.path = path.join(__dirname,config.buildPath,
+    webpackConfig.output.path = resolve(__dirname,config.buildPath,
         config.staticPath,hash);
     let cssProcessors = [
         {{#if_eq preProcessor 'SASS'}}
@@ -267,12 +269,12 @@ gulp.task("webpack", ()=> {
             })
         );
     }
-    let compiler = webpack(MYCONFIG);
+    let compiler = webpack(NEW_CONFIG);
 
     return new Promise((resolve, reject)=> {
         let compilerRunCount = 0;
 
-        function bundle(err, stats) {
+        function bundle(err) {
             if (err) {
                 return reject(err);
             }
@@ -315,15 +317,15 @@ gulp.task('server', ['build'], ()=> {
     });
     connect.server({
         root: ['./', resolve('buildPath'),resolve('buildPath','pages')],
-        port: config.port,
-        host: config.host,
+        port: config.port || 3002,
+        host: config.host || 'localhost',
         middleware: ()=> {
             return [
                 function(req, res, next) {
                     if (req.url.indexOf('mock') !== -1 && req.url.indexOf('.json') === -1) {
                         req.url = req.url.replace(/\?.*/, '') + '.json';
                     }
-                    let filepath = path.join('./', req.url);
+                    let filepath = resolve('./', req.url);
                     if ('POSTPUTDELETE'.indexOf(req.method.toUpperCase()) > -1 &&
                         fs.existsSync(filepath) && fs.statSync(filepath).isFile()) {
                         return res.end(fs.readFileSync(filepath));
@@ -339,13 +341,13 @@ gulp.task('server', ['build'], ()=> {
         livereload: true
     });
     if(config.open){
-        require('opn')(`http://${config.host}:${config.port}`)
+        require('opn')(`http://${config.host}:${config.port || 3002}`)
     }
 });
 //eslint
 gulp.task('eslint', ()=> {
-    let source = [path.join(config.src, '/**/*.{js,vue,jsx}'),
-        '!' + path.join(config.lib, '/**/*.js')];
+    let source = [resolve(config.src, '/**/*.{js,vue,jsx}'),
+        '!' + resolve(config.lib, '/**/*.js')];
     return gulp.src(source)
         .pipe(eslint())
         .pipe(eslint.format())
