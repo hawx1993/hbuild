@@ -84,7 +84,7 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 
 4.支持代码热替换，热替换失败会自动刷新整个页面
 
-5.开发模式不对代码进行压缩，sourceMap和提取CSS也只针对非开发模式有效(not dev)
+5.开发模式不对代码进行压缩，sourceMap 只针对非开发模式有效(not dev)
 
 ### HTML和模板引擎
 

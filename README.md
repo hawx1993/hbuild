@@ -7,26 +7,27 @@
 </p>
 
     
-Hbuild使用`hbuild-cli`命令行工具，全局注册后可快速生成项目启动套件。你可以使用Hbuild生成一个h5项目，或者vue项目（默认搭配react-router，可自由选择vuex），或者react项目。该套件包含如下特点：
+hbuild使用`hbuild-cli`命令行工具，通过`hbuild-cli`，你可以快速生成一个h5项目，或者vue项目（默认搭配react-router，可自由选择vuex），或者react项目。启动套件包含脚手架和模板引擎等：
     
 ### Features
        
 - Vue2 / Vue-Router / Vuex
 - Hot reloading for single-file components
 - Webpack 2 
-- babel [default]
-- LESS/SASS/Stylus [optional]
-- ejs/mustache [optional]
-- React [optional]
+- babel
+- LESS/SASS/Stylus  (optional)
+- ejs/mustache  (optional)
+- React  (optional)
 - zepto
-- autoprefixer [vue support]
+- autoprefixer
 - mock server
 - eslint
-- Support for building multi-page applications
+- Support build multi-page applications
 - offline mode support
-- file hash
+- [file hash](https://github.com/hawx1993/hbuild/blob/master/docs/filehash.md)
 
-其中zepto是默认全局引入的，可直接使用。h5项目默认引入ejs模板引擎。默认支持Babel转码。支持HMR。支持文件hash，以解决缓存问题。
+其中[zepto](https://github.com/hawx1993/hbuild/blob/master/docs/zepto.md)是默认全局引入的，可直接使用。h5项目可以选择ejs或mustache模板引擎。
+默认支持Babel转码。支持HMR。支持[文件指纹](https://github.com/hawx1993/hbuild/blob/master/docs/filehash.md)。
     
     
 ### Get Started
@@ -36,11 +37,7 @@ You'd better have node >=4 and npm >=3 and gulp >=3.9 installed:
     
 ```bash
 $ npm install -g hbuild-cli
-$ hbuild init new-project 
-$ //or use
-$ h init new-project //support short command
-$ cd new-project
-$ npm install || yarn
+$ h init new-project
  
 # edit files and start developing
 $ npm run dev
@@ -84,7 +81,7 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 
 4.支持代码热替换，热替换失败会自动刷新整个页面
 
-5.开发模式不对代码进行压缩，sourceMap和提取CSS也只针对非开发模式有效(not dev)
+5.开发模式不对代码进行压缩，sourceMap 只针对非开发模式有效(not dev)
 
 ### HTML和模板引擎
 
@@ -96,7 +93,7 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 
 ### CSS和预处理器
 
-1.支持css预处理器LESS、SASS和stylus [optional];
+1.支持css预处理器LESS、SASS和stylus (optional);
 
 2.默认采用`css-in-js`的方式，可在`hbuild.config.js`文件中配置是否单独提取css，提取出的css文件名称默认为：`[name].extract.css`
 
@@ -178,6 +175,8 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 1.新增mustache模板引擎支持，新增stylus预处理器支持，bug fixed --2017/6/9 18:30
 
 2.新增非开发环境css代码压缩，bug fixed --2017/6/15
+
+3.autoprefixer支持所有类型文件 --2017/6/15
 
 ### License
     

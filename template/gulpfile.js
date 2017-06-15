@@ -110,8 +110,8 @@ gulp.task("html", ()=> {
     } else {
         return gulp.src([resolve('src','pages')+'/*/+([^\.]).html'])
             .pipe(ejs())
-            .pipe(replace(/\$\$_CDNPATH_\$\$/g, '../'+resolve('staticPath',hash)))
-            .pipe(replace(/\$\$_STATICPATH_\$\$/g,'../'+resolve('staticPath',hash,'buildAssets')))
+            .pipe(replace(/\$\$_CDNPATH_\$\$/g, resolve('../','staticPath',hash)))
+            .pipe(replace(/\$\$_STATICPATH_\$\$/g,resolve('../','staticPath',hash,'buildAssets')))
             .pipe(htmlmin({
                 minifyJS: true,
                 minifyCSS: true,
@@ -171,15 +171,23 @@ gulp.task("webpack", ()=> {
         rules.push({
             test: processor.test,
             use: ExtractTextPlugin.extract({
-                use: [{
-                    loader: 'css-loader',options:{
-                        sourceMap: sourceMap,
-                        minimize: true
-                    }
-                },{
-                    loader: loader,options:{
-                        sourceMap: sourceMap,
-                        minimize: true
+                use: [
+                    {
+                        loader: 'css-loader',options:{
+                            sourceMap: sourceMap,
+                            minimize: !args.dev
+                        }
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            sourceMap: sourceMap
+                        }
+                    },
+                    {
+                        loader: loader,options:{
+                            sourceMap: sourceMap,
+                            minimize: !args.dev
                     }
                 }]
             })
@@ -190,21 +198,21 @@ gulp.task("webpack", ()=> {
         {{#if_eq preProcessor 'LESS'}}
         {
             test: /\.css$|\.less$/,
-            loaders: ['style-loader','css-loader','less-loader']
+            loaders: ['style-loader','css-loader','postcss-loader','less-loader']
         }{{/if_eq}}
         {{#if_eq preProcessor 'SASS'}}
         {
             test:  /\.css$|\.scss$/,
-            loaders: ['style-loader', 'css-loader', 'sass-loader']
+            loaders: ['style-loader', 'css-loader','postcss-loader', 'sass-loader']
         }{{/if_eq}}
         {{#if_eq preProcessor 'stylus'}}
         {
             test: /\.css$|\.styl$/,
-            loaders: ['style-loader', 'css-loader', 'stylus-loader']
+            loaders: ['style-loader', 'css-loader','postcss-loader', 'stylus-loader']
         }{{/if_eq}}
     ];
-    //非开发环境css提取和压缩
-    if(config.style.extract && !args.dev){
+    //css提取和压缩
+    if(config.style.extract){
         cssProcessors.forEach(processor => {
             if(processor.loaders.includes('less-loader')){
                 handleCssLoader(processor,'less-loader')

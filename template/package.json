@@ -63,7 +63,8 @@
         "less": "^2.7.2",
         "less-loader": "^4.0.3",{{/if_eq}}{{#if_eq template 'mustache'}}
         "mustache-loader": "^0.4.1",{{/if_eq}}
-        "opn": "^5.0.0",{{#if_eq preProcessor 'SASS'}}
+        "opn": "^5.0.0",
+        "postcss-loader": "^2.0.6",{{#if_eq preProcessor 'SASS'}}
         "node-sass": "^4.5.2",
         "sass-loader": "^6.0.5",{{/if_eq}}
         "string-replace-webpack-plugin": "^0.1.3",{{#if_eq project 'react'}}
