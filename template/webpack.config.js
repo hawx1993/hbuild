@@ -8,9 +8,8 @@ const webpack = require('webpack');
 const config = require('./hbuild.config');
 const autoprefixer = require('autoprefixer');
 
-function resolve (dir1,dir2) {
-    let path1 = dir1 || '',path2 = dir2 || '';
-    return path.join(__dirname,  path1,path2)
+function resolve (...pathname) {
+    return path.join(__dirname, ...pathname )
 }
 let pageDir = resolve(config.src,config.pages);
 let entryFilesArray = fs.readdirSync(pageDir);
@@ -91,8 +90,8 @@ module.exports = {
         new webpack.NoEmitOnErrorsPlugin(),
         //提供全局对象
         new webpack.ProvidePlugin({
-            $: 'zepto-webpack',
-            {{#if_eq project 'vue'}}
+            $: 'zepto-webpack'
+            {{#if_eq project 'vue'}},
             Vue: ['vue/dist/vue.esm.js', 'default'],{{/if_eq}}
         }),
         new webpack.optimize.CommonsChunkPlugin('common')

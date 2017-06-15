@@ -177,7 +177,7 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 
 1.新增mustache模板引擎支持，新增stylus预处理器支持，bug fixed --2017/6/9 18:30
 
-
+2.新增非开发环境css代码压缩，bug fixed --2017/6/15
 
 ### License
     

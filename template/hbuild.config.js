@@ -9,7 +9,6 @@ module.exports = {
     //本地服务器端口
     port: 3001,
     //文件目录
-    '': '',
     src: 'src',
     lib:  'lib',
     assets: 'assets',
@@ -25,11 +24,12 @@ module.exports = {
     buildAssets: 'assets',
     //是否自动打开浏览器
     open: true,
+    //sourceMap非开发模式有效
     sourceMap: true,
     //样式配置
     style: {
-        extract: false,//是否提取css文件
-        sourceMap: true,
+        extract: false,//是否提取css文件，非开发模式有效
+        sourceMap: true,//非开发模式有效
         extractFileName: '[name].extract.css'//文件名
     },
     //需要根据环境替换的变量
