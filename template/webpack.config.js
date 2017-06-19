@@ -35,7 +35,7 @@ module.exports = {
         hotUpdateMainFilename: 'hot/hot-update.json'
     },
     resolve: {
-        extensions: ['.js', '.vue', '.json','.less', '.scss','styl','.css','jsx'],
+        extensions: ['.js', '.vue', '.json','.less', '.scss','.styl','.css','.jsx'],
         alias: {
             'src': resolve(config.src),
             'components': resolve(config.src,config.components),

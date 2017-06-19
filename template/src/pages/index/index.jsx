@@ -12,4 +12,5 @@ class App extends Component {
         );
     }
 }
+if (module.hot) { module.hot.accept(); }//热加载
 ReactDom.render(<App />, document.querySelector('#main'));
