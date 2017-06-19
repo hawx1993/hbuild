@@ -48,8 +48,9 @@
         "src/pages/index/*.less": "preProcessor == 'LESS' && project == 'h5'",
         "src/pages/index/*.scss": "preProcessor == 'SASS' && project == 'h5'",
         "src/common/css/*.scss": "preProcessor == 'SASS'",
-        "src/pages/index/*.jsx": "project == 'react' ",
+        "src/pages/index/*.jsx": "project == 'react'",
         "src/pages/index/*.js": "project !=='react'",
+        "src/pages/index/module/*.jsx": "project == 'react'",
         "src/pages/index/*.styl": "preProcessor =='stylus' && project =='h5'"
     },
     "completeMessage":"To get started:\n\n  cd   {{destDirName}}\n  npm i || yarn\n  npm run dev"
