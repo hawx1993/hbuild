@@ -17,7 +17,7 @@ hbuild使用`hbuild-cli`命令行工具，通过`hbuild-cli`，你可以快速�
 - babel
 - LESS/SASS/Stylus  (optional)
 - ejs/mustache  (optional)
-- React  (optional)
+- React/ react-router  (optional)
 - zepto
 - autoprefixer
 - mock server
@@ -29,6 +29,7 @@ hbuild使用`hbuild-cli`命令行工具，通过`hbuild-cli`，你可以快速�
 其中[zepto](https://github.com/hawx1993/hbuild/blob/master/docs/zepto.md)是默认全局引入的，可直接使用。h5项目可以选择ejs或mustache模板引擎。
 默认支持Babel转码。支持HMR。支持[文件指纹](https://github.com/hawx1993/hbuild/blob/master/docs/filehash.md)。
     
+vue项目默认支持vue-router，react项目默认支持react-router 
     
 ### Get Started
     
@@ -178,6 +179,7 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 
 3.autoprefixer支持所有类型文件 --2017/6/15
 
+4.改gulp-connect为webpack-dev-server，支持react-router --2017/6/19
 ### License
     
 MIT © [hawx1993](https://github.com/hawx1993)

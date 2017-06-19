@@ -3,7 +3,6 @@
  */
 const fs = require('fs');
 const path = require('path');
-const express = require('express');
 const webpack = require('webpack');
 const config = require('./hbuild.config');
 const autoprefixer = require('autoprefixer');
@@ -20,9 +19,9 @@ entryFilesArray.forEach(function(file){
         let dirname = path.basename(file);
         entryFiles[dirname+'/index'] = [
             {{#if_eq project 'react'}}
-            path.join(__dirname,config.src,config.pages ,dirname , 'index.jsx')
+            resolve(config.src,config.pages ,dirname , 'index.jsx')
             {{else}}
-            path.join(__dirname,config.src,config.pages , dirname ,'index.js')
+            resolve(config.src,config.pages , dirname ,'index.js')
             {{/if_eq}}
         ]
     }
@@ -38,7 +37,7 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.vue', '.json','.less', '.scss','styl','.css','jsx'],
         alias: {
-            '@': resolve(config.src),
+            'src': resolve(config.src),
             'components': resolve(config.src,config.components),
             'common': resolve(config.src,config.common),
             'lib': resolve(config.src,config.lib){{#if_eq project 'vue'}},

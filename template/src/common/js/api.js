@@ -4,6 +4,6 @@
 let config = require('./config.js');
 
 let Api = {
-    queryItemList: config.rootUrl + '/h5/promotion/queryItemList/1.0'
+    queryItemList: config.rootUrl + '/h5/promotion/queryItemList/1.0.json'
 };
 export default Api;

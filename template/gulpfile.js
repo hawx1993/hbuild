@@ -2,7 +2,6 @@
  * Created by trigkit4 on 2017/5/8.
  */
 const path = require('path');
-const fs = require('fs');
 const gulp = require("gulp");
 const del = require("del");
 const ejs = require('gulp-ejs');
@@ -14,12 +13,12 @@ const connect = require('gulp-connect');
 const eslint = require('gulp-eslint');
 const rename = require('gulp-rename');
 const webpack = require('webpack');
-const express = require('express');
 const config = require('./hbuild.config');
 const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin');
 const webpackConfig = require('./webpack.config');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const StringReplacePlugin = require("string-replace-webpack-plugin");
+const WebpackDevServer = require('webpack-dev-server');
 
 const NEW_CONFIG = Object.create(webpackConfig);
 
@@ -129,12 +128,12 @@ gulp.task("html", ()=> {
 //监听文件变化
 gulp.task("watch", ["html"], ()=> {
     //watch html
-    let urls = [config.src+"/**/*.html"];
+    let urls = resolve(config.src+"/**/*.html");
     gulp.watch(urls, ()=> {
         gulp.start("html");
     });
     //watch assets
-    let assets = config.src+'/'+config.assets+'/*.+(ico|png|jpeg|jpg|gif|eot|svg|ttf|woff)';
+    let assets = resolve(config.src,config.assets,'*.+(ico|png|jpeg|jpg|gif|eot|svg|ttf|woff)');
     gulp.watch(assets,()=>{
         gulp.start('assets')
     })
@@ -199,13 +198,11 @@ gulp.task("webpack", ()=> {
         {
             test: /\.css$|\.less$/,
             loaders: ['style-loader','css-loader','postcss-loader','less-loader']
-        }{{/if_eq}}
-        {{#if_eq preProcessor 'SASS'}}
+        }{{/if_eq}}{{#if_eq preProcessor 'SASS'}}
         {
             test:  /\.css$|\.scss$/,
             loaders: ['style-loader', 'css-loader','postcss-loader', 'sass-loader']
-        }{{/if_eq}}
-        {{#if_eq preProcessor 'stylus'}}
+        }{{/if_eq}}{{#if_eq preProcessor 'stylus'}}
         {
             test: /\.css$|\.styl$/,
             loaders: ['style-loader', 'css-loader','postcss-loader', 'stylus-loader']
@@ -229,9 +226,11 @@ gulp.task("webpack", ()=> {
     }
     //开发环境
     if (args.dev) {
-        let hotMiddlewareScript = 'webpack-hot-middleware/client?reload=true';
-        for(let k in webpackConfig.entry){
-            webpackConfig.entry[k].unshift(hotMiddlewareScript)
+        let hotMiddlewareScript = "webpack-dev-server/client?"+`http://${config.host}:${config.port || 3002}`;
+        for(let file in webpackConfig.entry) {
+            if(webpackConfig.entry.hasOwnProperty(file)){
+                webpackConfig.entry[file].unshift(hotMiddlewareScript,"webpack/hot/dev-server")
+            }
         }
         webpackConfig.plugins.push(
             new webpack.DefinePlugin({
@@ -308,39 +307,26 @@ gulp.task('build', (cb)=> {
 //启动本地服务器及mock server
 gulp.task('server', ['build'], ()=> {
     let compiler = webpack(webpackConfig);
-    const app = express();
-    const devMiddleWare = require('webpack-dev-middleware')(compiler, {
-        publicPath: webpackConfig.output.publicPath,
-        quiet: true
-    });
-    connect.server({
-        root: ['./', resolve('buildPath'),resolve('buildPath','pages')],
-        port: config.port || 3002,
-        host: config.host || 'localhost',
-        middleware: ()=> {
-            return [
-                function(req, res, next) {
-                    if (req.url.indexOf('mock') !== -1 && req.url.indexOf('.json') === -1) {
-                        req.url = req.url.replace(/\?.*/, '') + '.json';
-                    }
-                    let filepath = resolve('./', req.url);
-                    if ('POSTPUTDELETE'.indexOf(req.method.toUpperCase()) > -1 &&
-                        fs.existsSync(filepath) && fs.statSync(filepath).isFile()) {
-                        return res.end(fs.readFileSync(filepath));
-                    }
-                    next();
-                },
-                app.use(devMiddleWare),
-                app.use(require('webpack-hot-middleware')(compiler, {
-                    log: () => {}
-                }))
-            ];
+    let server = new WebpackDevServer(compiler, {
+        contentBase: [resolve('./'),resolve('buildPath'),resolve('buildPath','pages')],
+        hot: true,
+        disableHostCheck: true,
+        historyApiFallback: true,
+        quiet: false,
+        noInfo: false,
+        stats: {
+            chunks: false,
+            colors: true
         },
-        livereload: true
+        publicPath: webpackConfig.output.publicPath,
     });
-    if(config.open){
-        require('opn')(`http://${config.host}:${config.port || 3002}`)
-    }
+    server.listen(config.port, 'localhost', function() {
+        let colors = require('colors');
+        console.log(colors.green('Listening ' + config.host + ':' + config.port + '/' + config.buildPath +'/'+ config.pages));
+        if(config.open){
+            require('opn')(`http://${config.host}:${config.port || 3002}`)
+        }
+    })
 });
 //eslint
 gulp.task('eslint', ()=> {
