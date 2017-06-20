@@ -17,8 +17,10 @@ module.exports = {
     components:'components',
     //hostname
     host: 'localhost',
+    //构建工具目录
+    build: 'build',
     //编译输出目录
-    buildPath: 'build',
+    buildPath: 'dist',
     staticPath: 'static',
     //图片字体等输出路径
     buildAssets: 'assets',
@@ -28,7 +30,7 @@ module.exports = {
     sourceMap: true,
     //样式配置
     style: {
-        extract: false,//是否提取css文件，非开发模式有效
+        extract: false,//是否提取css文件
         sourceMap: true,//非开发模式有效
         extractFileName: '[name].extract.css'//文件名
     },

@@ -180,6 +180,9 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 3.autoprefixer支持所有类型文件 --2017/6/15
 
 4.改gulp-connect为webpack-dev-server，支持react-router --2017/6/19
+
+5.新增图片压缩和gulp增量压缩，构建工具移动至build目录  --2017/6/20
+
 ### License
     
 MIT © [hawx1993](https://github.com/hawx1993)

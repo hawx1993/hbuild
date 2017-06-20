@@ -52,9 +52,11 @@
         "file-loader": "^0.11.1",
         "git-rev-sync": "^1.9.1",
         "gulp": "^3.9.1",
+        "gulp-cache": "^0.4.6",
         "gulp-ejs": "^3.0.1",
         "gulp-eslint": "^3.0.1",
         "gulp-htmlmin": "^3.0.0",
+        "gulp-imagemin": "^3.3.0",
         "gulp-rename": "^1.2.2",
         "gulp-replace": "^0.5.4",
         "gulp-sequence": "^0.4.6",{{#if_eq preprocessor 'LESS'}}
