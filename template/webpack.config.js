@@ -80,7 +80,7 @@ module.exports = {
             },
             {
                 test: /\.(png|jpe?g|gif|woff|svg|eot|ttf)\??.*$/,
-                loader: 'url-loader?limit=100&name=[name].[ext]',
+                loader: 'url-loader?limit=1000&name=[name].[ext]',
                 exclude: /^node_modules$/
             }
         ]

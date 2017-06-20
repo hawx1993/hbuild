@@ -9,7 +9,6 @@ const crypto = require('crypto');
 const replace = require('gulp-replace');
 const htmlmin = require("gulp-htmlmin");
 const gulpSequence = require('gulp-sequence');
-const connect = require('gulp-connect');
 const eslint = require('gulp-eslint');
 const rename = require('gulp-rename');
 const webpack = require('webpack');
@@ -93,7 +92,6 @@ gulp.task("clean", ()=> {
 gulp.task("assets", ()=> {
     return gulp.src([resolve('src','assets')+'/*.+(ico|png|jpeg|jpg|gif|eot|svg|ttf|woff)'])
         .pipe(gulp.dest(resolve('buildPath','staticPath',hash,'buildAssets')))
-        .pipe(connect.reload());
 });
 gulp.task("html", ()=> {
     if (args.dev) {
@@ -105,7 +103,7 @@ gulp.task("html", ()=> {
                 path.basename = path.dirname;
                 path.dirname = "";
             }))
-            .pipe(gulp.dest(resolve('buildPath','pages'))).pipe(connect.reload());
+            .pipe(gulp.dest(resolve('buildPath','pages')))
     } else {
         return gulp.src([resolve('src','pages')+'/*/+([^\.]).html'])
             .pipe(ejs())
@@ -194,15 +192,15 @@ gulp.task("webpack", ()=> {
         plugins.push(new ExtractTextPlugin(extractFileName))
     }
     let cssProcessors = [
-        {{#if_eq preProcessor 'LESS'}}
+        {{#if_eq preprocessor 'LESS'}}
         {
             test: /\.css$|\.less$/,
             loaders: ['style-loader','css-loader','postcss-loader','less-loader']
-        }{{/if_eq}}{{#if_eq preProcessor 'SASS'}}
+        }{{/if_eq}}{{#if_eq preprocessor 'SASS'}}
         {
             test:  /\.css$|\.scss$/,
             loaders: ['style-loader', 'css-loader','postcss-loader', 'sass-loader']
-        }{{/if_eq}}{{#if_eq preProcessor 'stylus'}}
+        }{{/if_eq}}{{#if_eq preprocessor 'stylus'}}
         {
             test: /\.css$|\.styl$/,
             loaders: ['style-loader', 'css-loader','postcss-loader', 'stylus-loader']

@@ -52,18 +52,17 @@
         "file-loader": "^0.11.1",
         "git-rev-sync": "^1.9.1",
         "gulp": "^3.9.1",
-        "gulp-connect": "^5.0.0",
         "gulp-ejs": "^3.0.1",
         "gulp-eslint": "^3.0.1",
         "gulp-htmlmin": "^3.0.0",
         "gulp-rename": "^1.2.2",
         "gulp-replace": "^0.5.4",
-        "gulp-sequence": "^0.4.6",{{#if_eq preProcessor 'LESS'}}
+        "gulp-sequence": "^0.4.6",{{#if_eq preprocessor 'LESS'}}
         "less": "^2.7.2",
         "less-loader": "^4.0.3",{{/if_eq}}{{#if_eq template 'mustache'}}
         "mustache-loader": "^0.4.1",{{/if_eq}}
         "opn": "^5.0.0",
-        "postcss-loader": "^2.0.6",{{#if_eq preProcessor 'SASS'}}
+        "postcss-loader": "^2.0.6",{{#if_eq preprocessor 'SASS'}}
         "node-sass": "^4.5.2",
         "sass-loader": "^6.0.5",{{/if_eq}}
         "string-replace-webpack-plugin": "^0.1.3",{{#if_eq project 'react'}}
@@ -71,7 +70,7 @@
         "react-dom": "^15.5.4",
         "react-hot-loader": "next",
         "react-router-dom": "^4.1.1",{{/if_eq}}
-        "style-loader": "^0.17.0",{{#if_eq preProcessor 'stylus'}}
+        "style-loader": "^0.17.0",{{#if_eq preprocessor 'stylus'}}
         "stylus": "^0.54.5",
         "stylus-loader": "^3.0.1",{{/if_eq}}
         "url-loader": "^0.5.8",{{#if_eq project 'vue'}}

@@ -2,15 +2,15 @@
  * Created by trigkit4 on 2017/5/11.
  */
 {{#if_eq project 'h5'}}
-{{#if_eq preProcessor 'LESS'}}
+{{#if_eq preprocessor 'LESS'}}
 import '../../common/css/common.less';
 import './index.less';
 {{/if_eq}}
-{{#if_eq preProcessor 'SASS'}}
+{{#if_eq preprocessor 'SASS'}}
 import '../../common/css/common.scss';
 import './index.scss';
 {{/if_eq}}
-{{#if_eq preProcessor 'stylus'}}
+{{#if_eq preprocessor 'stylus'}}
 import './index.styl';
 {{/if_eq}}
 import mainTpl from './module/main.tpl.html'

@@ -9,7 +9,7 @@
         </div>
     </div>
 </template>
-{{#if_eq preProcessor 'LESS'}}
+{{#if_eq preprocessor 'LESS'}}
 <style lang="less" rel="stylesheet/less" scoped>
     .counter-wrapper{
         .counter {
@@ -34,7 +34,7 @@
 </style>
 {{/if_eq}}
 
-{{#if_eq preProcessor 'SASS'}}
+{{#if_eq preprocessor 'SASS'}}
 <style lang="scss" scoped>
     .counter-wrapper{
         .counter {
@@ -58,7 +58,7 @@
     }
 </style>
 {{/if_eq}}
-{{#if_eq preProcessor 'stylus'}}
+{{#if_eq preprocessor 'stylus'}}
 <style lang="stylus" scoped>
     .counter-wrapper
       .counter
