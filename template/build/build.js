@@ -18,13 +18,13 @@ const StringReplacePlugin = require("string-replace-webpack-plugin");
 const WebpackDevServer = require('webpack-dev-server');
 const imagemin = require('gulp-imagemin');
 const cache = require('gulp-cache');
+const LogPlugin = require('./log-plugin');
 
 const {util,resolve} = require('./util');
-
 const NEW_CONFIG = Object.create(webpackConfig);
-
 let hash = util.getHash();
 let args = util.getEnvironment();
+let {host, port, open, src, lib} = config
 
 gulp.task("clean", ()=> {
     if (!config.buildPath) return null;
@@ -72,7 +72,7 @@ gulp.task("html", ()=> {
 
 gulp.task("webpack", ()=> {
 
-    let { sourceMap, extractFileName } = config.style;
+    let { sourceMap, extractFileName,extract } = config.style;
 
     let rules = webpackConfig.module.rules;
     let plugins = webpackConfig.plugins;
@@ -124,7 +124,7 @@ gulp.task("webpack", ()=> {
                 }
             }
         ]
-        !config.style.extract && cssLoaders.unshift({
+        !extract && cssLoaders.unshift({
             loader: 'style-loader',
             options:{
                 sourceMap: sourceMap,
@@ -133,12 +133,12 @@ gulp.task("webpack", ()=> {
         })
         rules.push({
             test: processor,
-            use: config.style.extract ? ExtractTextPlugin.extract({
+            use: extract ? ExtractTextPlugin.extract({
                 fallback : "style-loader",
                 use: cssLoaders
             }) : cssLoaders
         });
-        config.style.extract  && plugins.push(new ExtractTextPlugin(extractFileName))
+        extract  && plugins.push(new ExtractTextPlugin(extractFileName))
     }
     let cssProcessors =
         {{#if_eq preprocessor 'LESS'}}
@@ -158,7 +158,7 @@ gulp.task("webpack", ()=> {
     handleCssLoader(cssProcessors.test,cssProcessors.loaders.pop());
     //开发环境
     if (args.dev) {
-        let hotMiddlewareScript = "webpack-dev-server/client?"+`http://${config.host}:${config.port || 3002}`;
+        let hotMiddlewareScript = "webpack-dev-server/client?"+`http://${host}:${port || 3002}`;
         for(let file in webpackConfig.entry) {
             if(webpackConfig.entry.hasOwnProperty(file)){
                 webpackConfig.entry[file].unshift(hotMiddlewareScript,"webpack/hot/dev-server")
@@ -241,6 +241,7 @@ gulp.task('build', (cb)=> {
 
 //启动本地服务器及mock server
 gulp.task('server', ['build'], ()=> {
+    webpackConfig.plugins.push(new LogPlugin(host , port))
     let compiler = webpack(webpackConfig);
     let server = new WebpackDevServer(compiler, {
         contentBase: [resolve('./'),resolve('buildPath'),resolve('buildPath','pages')],
@@ -255,18 +256,16 @@ gulp.task('server', ['build'], ()=> {
         },
         publicPath: webpackConfig.output.publicPath,
     });
-    server.listen(config.port, 'localhost', function() {
-        let colors = require('colors');
-        console.log(colors.green('Listening ' + config.host + ':' + config.port + '/' + config.buildPath +'/'+ config.pages));
-        if(config.open){
-            require('opn')(`http://${config.host}:${config.port || 3002}`)
+    server.listen(port, 'localhost', function() {
+        if(open){
+            require('opn')(`http://${host}:${port || 3002}`)
         }
     })
 });
 //eslint
 gulp.task('eslint', ()=> {
-    let source = [resolve(config.src, '/**/*.{js,vue,jsx}'),
-        '!' + resolve(config.lib, '/**/*.js')];
+    let source = [resolve(src, '/**/*.{js,vue,jsx}'),
+        '!' + resolve(lib, '/**/*.js')];
     return gulp.src(source)
         .pipe(eslint())
         .pipe(eslint.format())

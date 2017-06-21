@@ -40,18 +40,22 @@
     },
     "filters": {
         "src/pages/index/module/*.html": "project == 'h5'",
+        "src/pages/index/*.jsx": "project == 'react'",
+        "src/pages/index/*.js": "project !=='react'",
+        "src/pages/index/module/*.jsx": "project == 'react'",
+        "src/pages/index/*.styl": "preprocessor =='stylus' && project =='h5'",
+        "src/pages/index/*.less": "preprocessor == 'LESS' && project == 'h5'",
+        "src/pages/index/*.scss": "preprocessor == 'SASS' && project == 'h5'",
         "src/components/index/*.vue": "project == 'vue'",
         "src/components/router/*.js": "project == 'vue'",
         "src/components/counter/*.vue": "project == 'vue' && vuex",
         "src/components/store/*.js": "project == 'vue' && vuex",
         "src/common/css/*.less": "preprocessor == 'LESS'",
-        "src/pages/index/*.less": "preprocessor == 'LESS' && project == 'h5'",
-        "src/pages/index/*.scss": "preprocessor == 'SASS' && project == 'h5'",
         "src/common/css/*.scss": "preprocessor == 'SASS'",
-        "src/pages/index/*.jsx": "project == 'react'",
-        "src/pages/index/*.js": "project !=='react'",
-        "src/pages/index/module/*.jsx": "project == 'react'",
-        "src/pages/index/*.styl": "preprocessor =='stylus' && project =='h5'"
+        "src/common/css/*.styl": "preprocessor == 'stylus'",
+        "src/lib/media.less": "preprocessor == 'LESS' ",
+        "src/lib/media.scss": "preprocessor == 'SASS' ",
+        "src/lib/media.styl": "preprocessor == 'stylus' "
     },
     "completeMessage":"To get started:\n\n  cd   {{destDirName}}\n  npm i || yarn\n  npm run dev"
 }

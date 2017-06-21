@@ -3,14 +3,15 @@
  */
 {{#if_eq project 'h5'}}
 {{#if_eq preprocessor 'LESS'}}
-import '../../common/css/common.less';
+import 'common/css/common.less';
 import './index.less';
 {{/if_eq}}
 {{#if_eq preprocessor 'SASS'}}
-import '../../common/css/common.scss';
+import 'common/css/common.scss';
 import './index.scss';
 {{/if_eq}}
 {{#if_eq preprocessor 'stylus'}}
+import 'common/css/common.styl';
 import './index.styl';
 {{/if_eq}}
 import mainTpl from './module/main.tpl.html'

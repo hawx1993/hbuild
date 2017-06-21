@@ -5,7 +5,7 @@ const crypto = require('crypto');
 const config = require('../hbuild.config');
 const path = require('path');
 
-exports.util = {
+let util = {
     getHash() {
         const secret = 'hbuild';
         let md5 = crypto.createHash('md5',secret),
@@ -57,11 +57,16 @@ exports.util = {
     }
 };
 
-exports.resolve = function resolve(...pathname) {
+function resolve(...pathname) {
     let buildDir ,pathArray = [];
     for(let name of pathname){
         buildDir = !config[name] ? name || '' : config[name];
         pathArray.push(buildDir)
     }
     return path.join(...pathArray);
+}
+
+module.exports = {
+    util: util,
+    resolve: resolve
 }
