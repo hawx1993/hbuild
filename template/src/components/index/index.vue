@@ -7,20 +7,20 @@
         <p>copyright reserved by \{{ items.userName}}</p>
     </div>
 </template>
-{{#if_eq preProcessor 'SASS'}}
+{{#if_eq preprocessor 'SASS'}}
 <style lang="scss" scoped>
     .page{
         text-align: center;
         font-size: 20px;
     }
-</style>{{/if_eq}}{{#if_eq preProcessor 'LESS'}}
+</style>{{/if_eq}}{{#if_eq preprocessor 'LESS'}}
 <style lang="less" scoped>
     .page{
         text-align: center;
         font-size: 20px;
     }
 </style>
-{{/if_eq}}{{#if_eq preProcessor 'stylus'}}
+{{/if_eq}}{{#if_eq preprocessor 'stylus'}}
 <style lang="stylus" scoped>
     .page
       text-align center

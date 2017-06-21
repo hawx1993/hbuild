@@ -32,7 +32,7 @@ module.exports = {
     style: {
         extract: false,//是否提取css文件
         sourceMap: true,//非开发模式有效
-        extractFileName: '[name].extract.css'//文件名
+        extractFileName: '[name].css'//文件名
     },
     //需要根据环境替换的变量
     replacement: [

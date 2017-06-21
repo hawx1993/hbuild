@@ -9,7 +9,7 @@
             "type": "string",
             "required": false,
             "message": "Project description",
-            "default": "build  project starter kit rapidly by Hbuild"
+            "default": "build  project starter kit rapidly by hbuild"
         },
         "author":{
             "type": "string",
@@ -17,24 +17,24 @@
         },
         "project": {
             "type": "list",
-            "message": "Choose your project type",
+            "message": "select your project type",
             "choices": ["h5","vue","react"]
         },
         "template": {
             "when": "project =='h5'",
             "type": "list",
-            "message": "Choose your template",
+            "message": "select your template engine",
             "choices": ["ejs","mustache"]
         },
         "vuex": {
             "when": "project=='vue'",
             "type": "confirm",
-            "message": "Use vuex in your project",
+            "message": "use vuex in your project",
             "default": true
         },
         "preprocessor": {
             "type": "list",
-            "message": "Choose css pre-processor",
+            "message": "select one css pre-processor",
             "choices": ["LESS","SASS","stylus"]
         }
     },
