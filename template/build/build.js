@@ -33,7 +33,7 @@ gulp.task("clean", ()=> {
 });
 
 gulp.task("assets", ()=> {
-    return gulp.src([resolve('src','assets')+'/*.+(ico|png|jpeg|jpg|gif|eot|svg|ttf|woff)'])
+    return gulp.src(resolve('src','assets','*.+(ico|png|jpeg|jpg|gif|eot|svg|ttf|woff)'))
         .pipe(cache(imagemin({
             optimizationLevel: 7,
             progressive: true
@@ -42,7 +42,7 @@ gulp.task("assets", ()=> {
 });
 gulp.task("html", ()=> {
     if (args.dev) {
-        return gulp.src([resolve('src','pages')+'/*/+([^\.]).html'])
+        return gulp.src(resolve('src','pages','/*/+([^\.]).html'))
             .pipe(cache(ejs()))
             .pipe(replace(/\$\$_CDNPATH_\$\$/g, resolve('staticPath',hash)))
             .pipe(replace(/\$\$_STATICPATH_\$\$/g,resolve('staticPath',hash,'buildAssets')))
@@ -52,7 +52,7 @@ gulp.task("html", ()=> {
             })))
             .pipe(gulp.dest(resolve('buildPath','pages')))
     } else {
-        return gulp.src([resolve('src','pages')+'/*/+([^\.]).html'])
+        return gulp.src(resolve('src','pages','/*/+([^\.]).html'))
             .pipe(cache(ejs()))
             .pipe(replace(/\$\$_CDNPATH_\$\$/g, resolve('../','staticPath',hash)))
             .pipe(replace(/\$\$_STATICPATH_\$\$/g,resolve('../','staticPath',hash,'buildAssets')))
@@ -156,7 +156,7 @@ gulp.task("webpack", ()=> {
         }{{/if_eq}}
 
     handleCssLoader(cssProcessors.test,cssProcessors.loaders.pop());
-    //开发环境
+        //开发环境
     if (args.dev) {
         let hotMiddlewareScript = "webpack-dev-server/client?"+`http://${host}:${port || 3002}`;
         for(let file in webpackConfig.entry) {
@@ -174,7 +174,7 @@ gulp.task("webpack", ()=> {
         )
         //线上环境
     }else {
-        //开发过程无需打开sourcemap
+        //sourcemap非开发环境有效
         let webpackSourceMap = config.sourceMap;
         if(webpackSourceMap){
             webpackConfig["devtool"] = 'source-map';
