@@ -7,34 +7,32 @@
 </p>
 
     
-hbuild使用`hbuild-cli`命令行工具，通过`hbuild-cli`，你可以快速生成一个h5项目，或者vue项目（默认搭配react-router，可自由选择vuex），或者react项目。启动套件包含脚手架和模板引擎等：
+Hbuild使用`hbuild-cli`命令行工具，全局注册后可快速生成项目启动套件。你可以使用Hbuild生成一个h5项目，或者vue项目（默认搭配react-router，可自由选择vuex），或者react项目。该套件包含如下特点：
     
 ### Features
        
 - Vue2 / Vue-Router / Vuex
 - Hot reloading for single-file components
 - Webpack 2 
-- babel
-- LESS/SASS/Stylus  (optional)
-- ejs/mustache  (optional)
-- React/ react-router  (optional)
+- babel [default]
+- LESS/SASS/Stylus [optional]
+- ejs/mustache [optional]
+- React [optional]
 - zepto
-- autoprefixer
+- autoprefixer [vue support]
 - mock server
 - eslint
-- Support build multi-page applications
+- Support for building multi-page applications
 - offline mode support
-- [file hash](https://github.com/hawx1993/hbuild/blob/master/docs/filehash.md)
+- file hash
 
-其中[zepto](https://github.com/hawx1993/hbuild/blob/master/docs/zepto.md)是默认全局引入的，可直接使用。h5项目可以选择ejs或mustache模板引擎。
-默认支持Babel转码。支持HMR。支持[文件指纹](https://github.com/hawx1993/hbuild/blob/master/docs/filehash.md)。
+其中zepto是默认全局引入的，可直接使用。h5项目默认引入ejs模板引擎。默认支持Babel转码。支持HMR。支持文件hash，以解决缓存问题。
     
-vue项目默认支持vue-router，react项目默认支持react-router 
     
 ### Get Started
     
     
-You'd better have node >=4 and npm >=3 and gulp >=3.9 installed:
+You'd better have node >=6 and npm >=3 and gulp >=3.9 installed:
     
 ```bash
 $ npm install -g hbuild-cli
@@ -56,8 +54,6 @@ when you clone this project,you can  use a template on your local file system:
 
 ```bash
 $ git clone git@github.com:hawx1993/hbuild.git
-$ hbuild init ./hbuild new-project
-//or
 $ h init ./hbuild new-project
 ```
 ### 命令
@@ -94,9 +90,9 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 
 ### CSS和预处理器
 
-1.支持css预处理器LESS、SASS和stylus (optional);
+1.支持css预处理器LESS、SASS和stylus [optional];
 
-2.默认采用`css-in-js`的方式，可在`hbuild.config.js`文件中配置是否单独提取css，提取出的css文件名称默认为：`[name].extract.css`
+2.默认采用`css-in-js`的方式，可在`hbuild.config.js`文件中配置是否单独提取css，提取出的css文件名称默认为：`[name].css`，name为src下less/scss/stylus文件名
 
 3.开启提取css文件，需要在HTML中引入，引入方式同js
 
@@ -128,8 +124,11 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 ```bash
 .
 ├── README.md
-├── gulpfile.js                 # gulp文件
-├── hbuild.config.js            # 脚手架配置文件
+├── build                       # 构建工具目录
+    └── gulpfile.js             # gulp文件
+    └── postcss.config.js       # postcss配置文件
+    └── util.js                 # gulp脚手架工具方法
+    └── hbuild.config.js        # 脚手架配置文件
 ├── mock                        # mock数据目录，保持和接口一样的路径即可
 │   └── h5
 ├── package.json    
@@ -144,7 +143,7 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 │   │       ├── api.js          # api文件
 │   │       ├── config.js       # 配置文件
 │   │       └── util.js         # 工具函数文件，可将公用方法存放于此
-│   ├── components              # 组件
+│   ├── components              # 组件目录
 │   │   ├── counter             # 计数器vue组件
 │   │   │   └── index.vue
 │   │   ├── index               # vue组件的入口文件
@@ -166,7 +165,6 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 │           └── module          # 页面模板模块，可在index.js/jsx文件引入该模块文件
 │               ├── main.jsx
 │               └── main.tpl.html
-├── webpack.config.js
 └── yarn.lock
 ```
 
@@ -182,6 +180,8 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 4.改gulp-connect为webpack-dev-server，支持react-router --2017/6/19
 
 5.新增图片压缩和gulp增量压缩，构建工具移动至build目录  --2017/6/20
+
+6.postcss.config.js移至build目录，保持项目根目录的简洁性 --2017/6/21
 
 ### License
     

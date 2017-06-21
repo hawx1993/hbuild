@@ -98,64 +98,64 @@ gulp.task("webpack", ()=> {
     webpackConfig.output.path = resolve(__dirname,'../',config.buildPath,
         config.staticPath,hash);
     function handleCssLoader(processor,loader) {
-        rules.push({
-            test: processor.test,
-            use: ExtractTextPlugin.extract({
-                use: [
-                    {
-                        loader: 'css-loader',options:{
-                            sourceMap: sourceMap,
-                            minimize: !args.dev
-                        }
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            sourceMap: sourceMap
-                        }
-                    },
-                    {
-                        loader: loader,options:{
-                            sourceMap: sourceMap,
-                            minimize: !args.dev
-                        }
+        let cssLoaders = [
+            {
+                loader: 'css-loader',
+                options:{
+                    sourceMap: sourceMap,
+                    minimize: !args.dev
+                }
+            },
+            {
+                loader: 'postcss-loader',
+                options: {
+                    sourceMap: sourceMap,
+                    minimize: !args.dev,
+                    config: {
+                        path: resolve(config.build,'postcss.config.js')
                     }
-                ]
-            })
-        });
-        plugins.push(new ExtractTextPlugin(extractFileName))
-    }
-    let cssProcessors = [
-        {{#if_eq preprocessor 'LESS'}}
-    {
-        test: /\.css$|\.less$/,
-            loaders: ['style-loader','css-loader','postcss-loader','less-loader']
-    }{{/if_eq}}{{#if_eq preprocessor 'SASS'}}
-    {
-        test:  /\.css$|\.scss$/,
-            loaders: ['style-loader', 'css-loader','postcss-loader', 'sass-loader']
-    }{{/if_eq}}{{#if_eq preprocessor 'stylus'}}
-    {
-        test: /\.css$|\.styl$/,
-            loaders: ['style-loader', 'css-loader','postcss-loader', 'stylus-loader']
-    }{{/if_eq}}
-    ];
-    //css提取和压缩
-    if(config.style.extract){
-        cssProcessors.forEach(processor => {
-            if(processor.loaders.includes('less-loader')){
-                handleCssLoader(processor,'less-loader')
-            }else if(processor.loaders.includes('sass-loader')){
-                handleCssLoader(processor,'sass-loader')
-            }else if(processor.loaders.includes('stylus-loader')){
-                handleCssLoader(processor,'stylus-loader')
+                }
+            },
+            {
+                loader: loader,
+                options:{
+                    sourceMap: sourceMap,
+                    minimize: !args.dev
+                }
             }
+        ]
+        !config.style.extract && cssLoaders.unshift({
+            loader: 'style-loader',
+            options:{
+                sourceMap: sourceMap,
+                minimize: !args.dev
+            }
+        })
+        rules.push({
+            test: processor,
+            use: config.style.extract ? ExtractTextPlugin.extract({
+                fallback : "style-loader",
+                use: cssLoaders
+            }) : cssLoaders
         });
-    }else{
-        rules.push(
-            cssProcessors[0]
-        )
+        config.style.extract  && plugins.push(new ExtractTextPlugin(extractFileName))
     }
+    let cssProcessors =
+        {{#if_eq preprocessor 'LESS'}}
+        {
+            test: /\.css$|\.less$/,
+            loaders: ['style-loader','css-loader','postcss-loader','less-loader']
+        }{{/if_eq}}{{#if_eq preprocessor 'SASS'}}
+        {
+            test:  /\.css$|\.scss$/,
+            loaders: ['style-loader', 'css-loader','postcss-loader', 'sass-loader']
+        }{{/if_eq}}{{#if_eq preprocessor 'stylus'}}
+        {
+            test: /\.css$|\.styl$/,
+            loaders: ['style-loader', 'css-loader','postcss-loader', 'stylus-loader']
+        }{{/if_eq}}
+
+    handleCssLoader(cssProcessors.test,cssProcessors.loaders.pop());
     //开发环境
     if (args.dev) {
         let hotMiddlewareScript = "webpack-dev-server/client?"+`http://${config.host}:${config.port || 3002}`;
@@ -195,7 +195,9 @@ gulp.task("webpack", ()=> {
                         warnings: false
                     },
                     sourceMap: true,
-                    except: ['import', '$', 'exports', 'require']
+                    mangle: {
+                        except: ['import', '$', 'exports', 'require']
+                    }
                 }
             })
         );
