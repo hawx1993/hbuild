@@ -252,7 +252,7 @@ gulp.task('server', ['build'], ()=> {
         },
         publicPath: webpackConfig.output.publicPath,
     });
-    server.listen(port, host, function() {
+    server.listen(port|| 3002, host, function() {
         if(open){
             require('opn')(`http://${host}:${port || 3002}`)
         }
