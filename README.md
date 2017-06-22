@@ -11,22 +11,24 @@ Hbuild使用`hbuild-cli`命令行工具，全局注册后可快速生成项目�
     
 ### Features
        
-- Vue2 / Vue-Router / Vuex
+- Vue2 / Vue-Router / Vuex (optional)
 - Hot reloading for single-file components
 - Webpack 2 
-- babel [default]
-- LESS/SASS/Stylus [optional]
-- ejs/mustache [optional]
-- React [optional]
+- babel (default)
+- LESS/SASS/Stylus (optional)
+- ejs/mustache/art-template (optional)
+- React / React-Router (optional)
 - zepto
-- autoprefixer [vue support]
+- autoprefixer (vue support)
 - mock server
 - eslint
 - Support for building multi-page applications
 - offline mode support
-- file hash
+- [file hash](https://github.com/hawx1993/hbuild/blob/master/docs/ChangeLog.md)
 
-其中zepto是默认全局引入的，可直接使用。h5项目默认引入ejs模板引擎。默认支持Babel转码。支持HMR。支持文件hash，以解决缓存问题。
+其中[zepto](https://github.com/hawx1993/hbuild/blob/master/docs/zepto.md)是默认全局引入的，可直接使用。h5项目可以选择`ejs，mustache`或`art-template`模板引擎。 默认支持Babel转码。支持HMR。支持[文件指纹](https://github.com/hawx1993/hbuild/blob/master/docs/ChangeLog.md)。
+
+vue项目默认支持vue-router，react项目默认支持react-router
     
     
 ### Get Started
@@ -80,19 +82,25 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 
 5.开发模式不对代码进行压缩，sourceMap 只针对非开发模式有效(not dev)
 
+6.支持图片压缩
+
 ### HTML和模板引擎
 
-1.h5项目支持 ejs 和 mustache模板引擎，默认支持zepto，可直接使用。
+1.h5项目支持 ejs ，mustache和`art-template`模板引擎，默认支持`zepto`
 
-2.当你执行发布线上的命令时，html和js代码会被压缩
+2.非本地开发环境，html，js和css代码会被压缩
 
-3.当你在pages下新建一个目录时，html文件需要手动配置一下静态资源的引用
+3.当你在pages下新建一个目录时，html文件需要手动配置一下静态资源的引用，例如在index目录下：
+
+```javascript
+<script src="$$_CDNPATH_$$/index/index.js"></script>
+```
 
 ### CSS和预处理器
 
-1.支持css预处理器LESS、SASS和stylus [optional];
+1.支持css预处理器LESS、SASS和stylus (optional);
 
-2.默认采用`css-in-js`的方式，可在`hbuild.config.js`文件中配置是否单独提取css，提取出的css文件名称默认为：`[name].css`，name为src下less/scss/stylus文件名
+2.默认采用`css-in-js`的方式，可在`hbuild.config.js`文件中配置是否单独提取css，提取出的css文件名称默认为：`[name].css`，name为src下`less/scss/stylus`文件名
 
 3.开启提取css文件，需要在HTML中引入，引入方式同js
 
@@ -125,10 +133,10 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 .
 ├── README.md
 ├── build                       # 构建工具目录
-    └── gulpfile.js             # gulp文件
-    └── postcss.config.js       # postcss配置文件
-    └── util.js                 # gulp脚手架工具方法
-    └── hbuild.config.js        # 脚手架配置文件
+│    └── gulpfile.js            # gulp文件
+│    └── postcss.config.js      # postcss配置文件
+│    └── util.js                # gulp脚手架工具方法
+│    └── hbuild.config.js       # 脚手架配置文件
 ├── mock                        # mock数据目录，保持和接口一样的路径即可
 │   └── h5
 ├── package.json    
@@ -171,17 +179,7 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 
 ### ChangeLog
 
-1.新增mustache模板引擎支持，新增stylus预处理器支持，bug fixed --2017/6/9 18:30
-
-2.新增非开发环境css代码压缩，bug fixed --2017/6/15
-
-3.autoprefixer支持所有类型文件 --2017/6/15
-
-4.改gulp-connect为webpack-dev-server，支持react-router --2017/6/19
-
-5.新增图片压缩和gulp增量压缩，构建工具移动至build目录  --2017/6/20
-
-6.postcss.config.js移至build目录，保持项目根目录的简洁性 --2017/6/21
+[changelog](https://github.com/hawx1993/hbuild/blob/master/docs/ChangeLog.md)
 
 ### License
     

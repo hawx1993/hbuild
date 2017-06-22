@@ -14,7 +14,12 @@ import './index.scss';
 import 'common/css/common.styl';
 import './index.styl';
 {{/if_eq}}
+{{#unless_eq template 'art-template'}}
 import mainTpl from './module/main.tpl.html'
+{{else}}
+import mainTpl from './module/main.art'
+{{/unless_eq}}
+
 import util from '../../common/js/util';
 import Api from '../../common/js/api';
 

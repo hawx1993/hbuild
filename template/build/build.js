@@ -232,11 +232,7 @@ taskName !== 'dev' && gulp.task(taskName, ()=> {
 });
 
 gulp.task('build', (cb)=> {
-    if (args.dev) {
-        gulpSequence('clean', 'webpack','html', 'assets', cb);
-    } else {
-        gulpSequence('clean', 'webpack', 'html', 'assets', cb);
-    }
+    gulpSequence('clean', 'webpack', 'html', 'assets', cb);
 });
 
 //启动本地服务器及mock server
@@ -256,7 +252,7 @@ gulp.task('server', ['build'], ()=> {
         },
         publicPath: webpackConfig.output.publicPath,
     });
-    server.listen(port, 'localhost', function() {
+    server.listen(port, host, function() {
         if(open){
             require('opn')(`http://${host}:${port || 3002}`)
         }

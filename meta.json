@@ -24,7 +24,7 @@
             "when": "project =='h5'",
             "type": "list",
             "message": "select your template engine",
-            "choices": ["ejs","mustache"]
+            "choices": ["ejs","mustache","art-template"]
         },
         "vuex": {
             "when": "project=='vue'",
@@ -39,7 +39,8 @@
         }
     },
     "filters": {
-        "src/pages/index/module/*.html": "project == 'h5'",
+        "src/pages/index/module/*.html": "template !== 'art-template'",
+        "src/pages/index/module/*.art": "template == 'art-template'",
         "src/pages/index/*.jsx": "project == 'react'",
         "src/pages/index/*.js": "project !=='react'",
         "src/pages/index/module/*.jsx": "project == 'react'",

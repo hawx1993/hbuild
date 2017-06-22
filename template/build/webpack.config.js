@@ -35,7 +35,7 @@ module.exports = {
         hotUpdateMainFilename: 'hot/hot-update.json'
     },
     resolve: {
-        extensions: ['.js', '.vue', '.json','.less', '.scss','.styl','.css','.jsx'],
+        extensions: ['.js', '.vue', '.json','.less', '.scss','.styl','.css','.jsx','art'],
         alias: {
             'src': resolve(config.src),
             'components': resolve(config.src,config.components),
@@ -82,7 +82,11 @@ module.exports = {
                 test: /\.(png|jpe?g|gif|woff|svg|eot|ttf)\??.*$/,
                 loader: 'url-loader?limit=1000&name=[name].[ext]',
                 exclude: /^node_modules$/
-            }
+            },{{#if_eq template 'art-template'}}
+            {
+                test: /\.art$/,
+                loader: "art-template-loader"
+            }{{/if_eq}}
         ]
     },
     plugins: [
