@@ -73,7 +73,6 @@ gulp.task("html", ()=> {
 gulp.task("webpack", ()=> {
 
     let { sourceMap, extractFileName,extract } = config.style;
-
     let rules = webpackConfig.module.rules;
     let plugins = webpackConfig.plugins;
     let replacements = config.replacement;
