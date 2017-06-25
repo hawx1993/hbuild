@@ -28,6 +28,8 @@ module.exports = {
     open: true,
     //sourceMap非开发模式有效
     sourceMap: true,
+    //生产环境是否拷贝mock数据至编译路径
+    useMock: false,
     //样式配置
     style: {
         extract: false,//是否提取css文件

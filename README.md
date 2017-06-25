@@ -84,6 +84,8 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 
 6.支持图片压缩
 
+7.支持生产环境拷贝mock数据至编译目录
+
 ### HTML和模板引擎
 
 1.h5项目支持 ejs ，mustache和`art-template`模板引擎，默认支持`zepto`

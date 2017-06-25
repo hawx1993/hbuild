@@ -69,7 +69,13 @@ gulp.task("html", ()=> {
             .pipe(gulp.dest(resolve('buildPath','pages')));
     }
 });
-
+//生产环境拷贝mock数据至编译目录
+gulp.task('copyMock', () => {
+    if(!args.dev && config.useMock){
+        return gulp.src(resolve('mock/**/*'))
+            .pipe(gulp.dest(resolve('buildPath','mock')))
+    }
+})
 gulp.task("webpack", ()=> {
 
     let { sourceMap, extractFileName,extract } = config.style;
@@ -231,7 +237,7 @@ taskName !== 'dev' && gulp.task(taskName, ()=> {
 });
 
 gulp.task('build', (cb)=> {
-    gulpSequence('clean', 'webpack', 'html', 'assets', cb);
+    gulpSequence('clean', 'webpack', 'html', 'assets','copyMock',cb);
 });
 
 //启动本地服务器及mock server
