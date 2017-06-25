@@ -10,7 +10,6 @@ module.exports = class LogPlugin {
         this.host = host
         this.port = port
     }
-
     apply(compiler) {
         compiler.plugin('done', () => {
             setTimeout(function() {

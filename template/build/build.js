@@ -41,32 +41,27 @@ gulp.task("assets", ()=> {
         .pipe(gulp.dest(resolve('buildPath','staticPath',hash,'buildAssets')))
 });
 gulp.task("html", ()=> {
-    if (args.dev) {
+    let stream = function (options) {
         return gulp.src(resolve('src','pages','/*/+([^\.]).html'))
             .pipe(cache(ejs()))
             .pipe(replace(/\$\$_CDNPATH_\$\$/g, resolve('staticPath',hash)))
             .pipe(replace(/\$\$_STATICPATH_\$\$/g,resolve('staticPath',hash,'buildAssets')))
-            .pipe(cache(rename(function(path) {
-                path.basename = path.dirname;
-                path.dirname = "";
-            })))
-            .pipe(gulp.dest(resolve('buildPath','pages')))
-    } else {
-        return gulp.src(resolve('src','pages','/*/+([^\.]).html'))
-            .pipe(cache(ejs()))
-            .pipe(replace(/\$\$_CDNPATH_\$\$/g, resolve('../','staticPath',hash)))
-            .pipe(replace(/\$\$_STATICPATH_\$\$/g,resolve('../','staticPath',hash,'buildAssets')))
-            .pipe(cache(htmlmin({
-                minifyJS: true,
-                minifyCSS: true,
-                collapseWhitespace: true,
-                removeComments: true
-            })))
+            .pipe(options)
             .pipe(cache(rename(function(path) {
                 path.basename = path.dirname;
                 path.dirname = "";
             })))
             .pipe(gulp.dest(resolve('buildPath','pages')));
+    }
+    if (args.dev) {
+        stream()
+    } else {
+        stream(cache(htmlmin({
+            minifyJS: true,
+            minifyCSS: true,
+            collapseWhitespace: true,
+            removeComments: true
+        })))
     }
 });
 //生产环境拷贝mock数据至编译目录
