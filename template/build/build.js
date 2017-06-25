@@ -54,7 +54,7 @@ gulp.task("html", ()=> {
             .pipe(gulp.dest(resolve('buildPath','pages')));
     }
     if (args.dev) {
-        stream()
+        stream(cache(htmlmin()))
     } else {
         stream(cache(htmlmin({
             minifyJS: true,
