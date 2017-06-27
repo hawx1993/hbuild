@@ -1,7 +1,7 @@
 /**
  * Created by trigkit4 on 2017/5/8.
  */
-const gulp = require("gulp");
+'use strict';
 const del = require("del");
 const ejs = require('gulp-ejs');
 const replace = require('gulp-replace');
@@ -20,29 +20,29 @@ const imagemin = require('gulp-imagemin');
 const cache = require('gulp-cache');
 const LogPlugin = require('./log-plugin');
 
+const {task, input , output, start} = require('./gulp-named');
 const {util,resolve} = require('./util');
-const NEW_CONFIG = Object.create(webpackConfig);
-let hash = util.getHash();
-let args = util.getEnvironment();
-let {host, port, open, src, lib} = config
+const hash = util.getHash();
+const args = util.getEnvironment();
+const {host, port, open, src, lib} = config
 
-gulp.task("clean", ()=> {
+task("clean", ()=> {
     if (!config.buildPath) return null;
 
     del.sync(config.buildPath);
 });
 
-gulp.task("assets", ()=> {
-    return gulp.src(resolve('src','assets','*.+(ico|png|jpeg|jpg|gif|eot|svg|ttf|woff)'))
+task("assets", ()=> {
+    return input(resolve('src','assets','*.+(ico|png|jpeg|jpg|gif|eot|svg|ttf|woff)'))
         .pipe(cache(imagemin({
             optimizationLevel: 7,
             progressive: true
         })))
-        .pipe(gulp.dest(resolve('buildPath','staticPath',hash,'buildAssets')))
+        .pipe(output(resolve('buildPath','staticPath',hash,'buildAssets')))
 });
-gulp.task("html", ()=> {
+task("html", ()=> {
     let stream = function (options) {
-        return gulp.src(resolve('src','pages','/*/+([^\.]).html'))
+        return input(resolve('src','pages','/*/+([^\.]).html'))
             .pipe(cache(ejs()))
             .pipe(replace(/\$\$_CDNPATH_\$\$/g, resolve('staticPath',hash)))
             .pipe(replace(/\$\$_STATICPATH_\$\$/g,resolve('staticPath',hash,'buildAssets')))
@@ -51,7 +51,7 @@ gulp.task("html", ()=> {
                 path.basename = path.dirname;
                 path.dirname = "";
             })))
-            .pipe(gulp.dest(resolve('buildPath','pages')));
+            .pipe(output(resolve('buildPath','pages')));
     }
     if (args.dev) {
         stream(cache(htmlmin()))
@@ -65,14 +65,14 @@ gulp.task("html", ()=> {
     }
 });
 //生产环境拷贝mock数据至编译目录
-gulp.task('copyMock', () => {
+task('copyMock', () => {
     if(!args.dev && config.useMock){
-        return gulp.src(resolve('mock/**/*'))
-            .pipe(gulp.dest(resolve('buildPath','mock')))
+        return input(resolve('mock/**/*'))
+            .pipe(output(resolve('buildPath','mock')))
     }
 })
-gulp.task("webpack", ()=> {
-
+task("webpack", ()=> {
+    const NEW_CONFIG = Object.create(webpackConfig);
     let { sourceMap, extractFileName,extract } = config.style;
     let rules = webpackConfig.module.rules;
     let plugins = webpackConfig.plugins;
@@ -222,21 +222,21 @@ gulp.task("webpack", ()=> {
         }
     });
 });
-gulp.task("dev",()=> {
-    gulp.start("server");
+task("dev",()=> {
+    start("server");
 });
 //部署日常，预发或线上
 let taskName = process.argv.pop();
-taskName !== 'dev' && gulp.task(taskName, ()=> {
-    gulp.start("build");
+taskName !== 'dev' && task(taskName, ()=> {
+    start("build");
 });
 
-gulp.task('build', (cb)=> {
+task('build', (cb)=> {
     gulpSequence('clean', 'webpack', 'html', 'assets','copyMock',cb);
 });
 
 //启动本地服务器及mock server
-gulp.task('server', ['build'], ()=> {
+task('server', ['build'], ()=> {
     webpackConfig.plugins.push(new LogPlugin(host , port))
     let compiler = webpack(webpackConfig);
     let server = new WebpackDevServer(compiler, {
@@ -259,10 +259,10 @@ gulp.task('server', ['build'], ()=> {
     })
 });
 //eslint
-gulp.task('eslint', ()=> {
+task('eslint', ()=> {
     let source = [resolve(src, '/**/*.{js,vue,jsx}'),
         '!' + resolve(lib, '/**/*.js')];
-    return gulp.src(source)
+    return input(source)
         .pipe(eslint())
         .pipe(eslint.format())
 });

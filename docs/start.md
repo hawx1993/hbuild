@@ -127,7 +127,7 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 ```bash
 .
 ├── README.md
-├── gulpfile.js                 # gulp文件
+├── gulpfile.babel.js                 # gulp文件
 ├── hbuild.config.js            # 脚手架配置文件
 ├── mock                        # mock数据目录，保持和接口一样的路径即可
 │   └── h5

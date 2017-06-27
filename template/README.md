@@ -133,7 +133,7 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 .
 ├── README.md
 ├── build                       # 构建工具目录
-│    └── gulpfile.js            # gulp文件
+│    └── gulpfile.babel.js            # gulp文件
 │    └── postcss.config.js      # postcss配置文件
 │    └── util.js                # gulp脚手架工具方法
 │    └── hbuild.config.js       # 脚手架配置文件
