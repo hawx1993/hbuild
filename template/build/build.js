@@ -140,19 +140,20 @@ task("webpack", ()=> {
         });
         extract  && plugins.push(new ExtractTextPlugin(extractFileName))
     }
+    let groupCssLoaders = ['style-loader','css-loader','postcss-loader'];
     let cssProcessors =
         {{#if_eq preprocessor 'LESS'}}
         {
             test: /\.css$|\.less$/,
-            loaders: ['style-loader','css-loader','postcss-loader','less-loader']
+            loaders: groupCssLoaders.concat('less-loader')
         }{{/if_eq}}{{#if_eq preprocessor 'SASS'}}
         {
             test:  /\.css$|\.scss$/,
-            loaders: ['style-loader', 'css-loader','postcss-loader', 'sass-loader']
+            loaders: groupCssLoaders.concat('sass-loader')
         }{{/if_eq}}{{#if_eq preprocessor 'stylus'}}
         {
             test: /\.css$|\.styl$/,
-            loaders: ['style-loader', 'css-loader','postcss-loader', 'stylus-loader']
+            loaders: groupCssLoaders.concat('stylus-loader')
         }{{/if_eq}}
 
     handleCssLoader(cssProcessors.test,cssProcessors.loaders.pop());
