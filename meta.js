@@ -3,6 +3,20 @@
  */
 module.exports = {
     template: 'handlebars',
+    templateOptions: {
+        helpers: {
+            'if_eq': function (a,b,opts) {
+                return a === b
+                    ? opts.fn(this)
+                    : opts.inverse(this)
+            },
+            'unless_eq': function (a, b, opts) {
+                return a === b
+                    ? opts.inverse(this)
+                    : opts.fn(this)
+            }
+        }
+    },
     prompts:{
         "name":{
             "type": "string",
@@ -62,10 +76,10 @@ module.exports = {
         "src/lib/media.scss": "preprocessor == 'SASS' ",
         "src/lib/media.styl": "preprocessor == 'stylus' "
     },
-    post({log, folderName, isNewFolder, chalk}) {
+    post({log, folderName, chalk}) {
         log.success(`Your new project has been successfully generated in ${chalk.underline(folderName)}!`)
         console.log(chalk.bold(`  To get started:\n`))
-        if (isNewFolder) console.log(`  cd ${folderName}`)
+        console.log(`  cd ${folderName}`)
         console.log(`  yarn`)
         console.log(`  npm  run  dev\n`)
         console.log(chalk.bold(`  To build for production:\n`))
