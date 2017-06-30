@@ -56,7 +56,7 @@ module.exports = {
             "choices": ["LESS","SASS","stylus"]
         }
     },
-    "filters": {
+    filters: {
         "src/pages/index/module/*.html": "project == 'h5' && template !== 'art-template'",
         "src/pages/index/module/*.art": "project == 'h5' &&  template == 'art-template'",
         "src/pages/index/*.jsx": "project == 'react'",
@@ -76,7 +76,7 @@ module.exports = {
         "src/lib/media.scss": "preprocessor == 'SASS' ",
         "src/lib/media.styl": "preprocessor == 'stylus' "
     },
-    post({log, folderName, chalk}) {
+    completeMessage({log, folderName, chalk}) {
         log.success(`Your new project has been successfully generated in ${chalk.underline(folderName)}!`)
         console.log(chalk.bold(`  To get started:\n`))
         console.log(`  cd ${folderName}`)
