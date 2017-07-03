@@ -97,6 +97,7 @@ task("webpack", ()=> {
     );
     webpackConfig.output.path = resolve(__dirname,'../',config.buildPath,
         config.staticPath,hash);
+    //TODO 抽离成webpack loader
     function handleCssLoader(processor,loader) {
         let cssLoaders = [
             {

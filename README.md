@@ -24,11 +24,11 @@ Hbuild使用[hbuild-cli](https://github.com/hawx1993/hbuild-cli)命令行工具�
 - eslint
 - Support for building multi-page applications
 - offline mode support
-- [file hash](https://github.com/hawx1993/hbuild/blob/master/docs/ChangeLog.md)
+- [file hash](https://github.com/hawx1993/hbuild/blob/master/docs/filehash.md)
 
-其中[zepto](https://github.com/hawx1993/hbuild/blob/master/docs/zepto.md)是默认全局引入的，可直接使用。h5项目可以选择`ejs，mustache`或`art-template`模板引擎。 默认支持Babel转码。支持HMR。支持[文件指纹](https://github.com/hawx1993/hbuild/blob/master/docs/ChangeLog.md)。
+其中[zepto](https://github.com/hawx1993/hbuild/blob/master/docs/zepto.md)是默认全局引入的，可直接使用。h5项目可以选择`ejs，mustache`或`art-template`模板引擎。 默认支持Babel转码。支持HMR。支持[文件指纹](https://github.com/hawx1993/hbuild/blob/master/docs/filehash.md)。
 
-vue项目默认支持vue-router，react项目默认支持react-router
+vue项目默认支持`vue-router`，react项目默认支持`react-router`，暂不支持直接通过命令行选择`react-redux`，可直接自行通过npm包安装，可以正常编译
     
     
 ### Get Started
@@ -181,7 +181,7 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 
 ### ChangeLog
 
-[changelog](https://github.com/hawx1993/hbuild/blob/master/docs/ChangeLog.md)
+[view changelog](https://github.com/hawx1993/hbuild/blob/master/docs/ChangeLog.md)
 
 ### License
     
