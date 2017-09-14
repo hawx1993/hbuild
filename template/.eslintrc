@@ -1,11 +1,17 @@
 {
-    "parser": "babel-eslint", {{#if_eq project 'vue'}}
-    "plugins": ["vue"],{{/if_eq}}
+    "parser": "babel-eslint",{{#if_eq project 'vue'}}
+    "plugins": ["vue"],{{/if_eq}} {{#if_eq project 'react'}}
+    "plugins": ["react"],{{/if_eq}}
     "env": {
         "browser": true,
         "node": true,
         "es6": true
-    },
+    },{{#if_eq project 'react'}}
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },{{/if_eq}}
     "rules": {
         //警告
         "no-empty-function":1,

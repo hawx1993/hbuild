@@ -1,19 +1,20 @@
 {
     "name": "{{ name }}",
-    "version": "1.0.3",
+    "version": "1.1.0",
     "description": "{{ description }}",
     "main": "gulpfile.js",
     "directories": {
         "doc": "docs"
     },
     "scripts": {
-        "dev": "gulp dev --dev",
+        "start": "gulp dev --dev",
         "dev-daily": "gulp dev --dev-daily",
         "dev-pre": "gulp dev --dev-pre",
         "daily": "gulp daily --daily",
         "pre": "gulp pre --pre",
-        "prod": "gulp prod --prod",
-        "eslint": "gulp eslint"
+        "build": "gulp prod --prod",
+        "precommit": "echo Pre-commit checking,please wait... && npm run lint",
+        "lint": "eslint ./src --cache --fix --ignore-pattern .gitignore"
     },
     "repository": {
         "type": "git",
@@ -31,16 +32,17 @@
     },
     "homepage": "https://github.com/hawx1993/hbuild#readme",
     "dependencies": {
-        {{#if_eq project 'vue'}}
-        "eslint-plugin-vue": "^2.0.1",
-        "vue": "^2.3.3",
-        "vue-template-compiler": "^2.3.3"{{/if_eq}}{{#vuex}},
-        "vuex": "^2.3.1"{{/vuex}}
-    },
-    "devDependencies": {
         {{#if_eq template 'art-template'}}
         "art-template": "^4.11.0",
-        "art-template-loader": "^1.4.3",{{/if_eq}}
+        "art-template-loader": "^1.4.3",{{/if_eq}}{{#if_eq project 'vue'}}
+        "vue": "^2.3.3",
+        "vue-template-compiler": "^2.3.3",{{/if_eq}}{{#vuex}}
+        "vuex": "^2.3.1",{{/vuex}}{{#if_eq project 'react'}}
+        "react": "^15.5.4",
+        "react-dom": "^15.5.4",{{/if_eq}}
+        "webpack": "^2.5.1"
+    },
+    "devDependencies": {
         "autoprefixer": "^7.0.1",
         "babel-core": "^6.24.1",
         "babel-eslint": "^7.2.3",
@@ -52,18 +54,23 @@
         "css-loader": "^0.28.1",
         "del": "^2.2.2",{{#if_eq template 'ejs'}}
         "ejs-template-loader": "^2.0.0",{{/if_eq}}
+        "eslint": "^4.6.1",
+        "eslint-plugin-babel": "^4.1.2",{{#if_eq project 'react'}}
+        "eslint-plugin-jsx-a11y": "^6.0.2",
+        "eslint-plugin-react": "^7.3.0",{{/if_eq}}{{#if_eq project 'vue'}}
+        "eslint-plugin-vue": "^2.0.1",{{/if_eq}}
         "extract-text-webpack-plugin": "^2.1.0",
         "file-loader": "^0.11.1",
         "git-rev-sync": "^1.9.1",
         "gulp": "^3.9.1",
         "gulp-cache": "^0.4.6",
         "gulp-ejs": "^3.0.1",
-        "gulp-eslint": "^3.0.1",
         "gulp-htmlmin": "^3.0.0",
         "gulp-imagemin": "^3.3.0",
         "gulp-rename": "^1.2.2",
         "gulp-replace": "^0.5.4",
-        "gulp-sequence": "^0.4.6",{{#if_eq preprocessor 'LESS'}}
+        "gulp-sequence": "^0.4.6",
+        "husky": "^0.14.3",{{#if_eq preprocessor 'LESS'}}
         "less": "^2.7.2",
         "less-loader": "^4.0.3",{{/if_eq}}{{#if_eq template 'mustache'}}
         "mustache-loader": "^0.4.1",{{/if_eq}}
@@ -72,8 +79,6 @@
         "node-sass": "^4.5.2",
         "sass-loader": "^6.0.5",{{/if_eq}}
         "string-replace-webpack-plugin": "^0.1.3",{{#if_eq project 'react'}}
-        "react": "^15.5.4",
-        "react-dom": "^15.5.4",
         "react-hot-loader": "next",
         "react-router-dom": "^4.1.1",{{/if_eq}}
         "style-loader": "^0.17.0",{{#if_eq preprocessor 'stylus'}}
@@ -82,7 +87,7 @@
         "url-loader": "^0.5.8",{{#if_eq project 'vue'}}
         "vue-loader": "^12.0.3",
         "vue-router": "^2.5.3",{{/if_eq}}
-        "webpack": "^2.5.1",
+        "validate-commit-msg": "^2.14.0",
         "webpack-dev-server": "^2.4.5",
         "webpack-parallel-uglify-plugin": "^0.4.1",
         "zepto-webpack": "^1.2.1"

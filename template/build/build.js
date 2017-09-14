@@ -7,7 +7,6 @@ const ejs = require('gulp-ejs');
 const replace = require('gulp-replace');
 const htmlmin = require("gulp-htmlmin");
 const gulpSequence = require('gulp-sequence');
-const eslint = require('gulp-eslint');
 const rename = require('gulp-rename');
 const webpack = require('webpack');
 const config = require('../hbuild.config');
@@ -252,19 +251,11 @@ task('server', ['build'], ()=> {
             chunks: false,
             colors: true
         },
-        publicPath: webpackConfig.output.publicPath,
+        publicPath: webpackConfig.output.publicPath
     });
     server.listen(port|| 3002, host, function() {
         if(open){
             require('opn')(`http://${host}:${port || 3002}`)
         }
     })
-});
-//eslint
-task('eslint', ()=> {
-    let source = [resolve(src, '/**/*.{js,vue,jsx}'),
-        '!' + resolve(lib, '/**/*.js')];
-    return input(source)
-        .pipe(eslint())
-        .pipe(eslint.format())
-});
+})
