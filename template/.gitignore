@@ -1,4 +1,7 @@
 node_modules
 *.log
 /dist
-.idea
+.idea/
+.vscode
+# eslint
+.DS_Store

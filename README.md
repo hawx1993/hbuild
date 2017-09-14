@@ -58,13 +58,12 @@ $ h init ./hbuild new-project
 ### 命令
 
 ```
-$ npm run dev;//本地开发模式，连接mock数据
+$ npm run start;//本地开发模式，连接mock数据
 $ npm run dev-daily;//本地开发模式，连接daily日常环境数据
 $ npm run dev-pre;//本地开发模式，连接预发环境数据
 $ npm run daily;//线上日常构建模式，连接daily日常环境数据
 $ npm run pre;//线上预发构建模式，连接预发环境数据
-$ npm run prod;//线上构建模式，连接线上环境数据
-$ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
+$ npm run build;//线上构建模式，连接线上环境数据
 ```
 
 ### 编译

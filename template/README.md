@@ -6,14 +6,14 @@
   <br><br><strong>Hbuild</strong> is a modern project starter kit<br>which  allows you to build your own project by cli rapidly
 </p>
 
-    
-Hbuild使用`hbuild-cli`命令行工具，全局注册后可快速生成项目启动套件。你可以使用Hbuild生成一个h5项目，或者vue项目（默认搭配react-router，可自由选择vuex），或者react项目。该套件包含如下特点：
-    
+
+Hbuild使用[hbuild-cli](https://github.com/hawx1993/hbuild-cli)命令行工具，全局注册后可快速生成项目启动套件。你可以使用Hbuild生成一个h5项目，或者vue项目（默认搭配react-router，可自由选择vuex），或者react项目。该套件包含如下特点：
+
 ### Features
-       
+
 - Vue2 / Vue-Router / Vuex (optional)
 - Hot reloading for single-file components
-- Webpack 2 
+- Webpack 2
 - babel (default)
 - LESS/SASS/Stylus (optional)
 - ejs/mustache/art-template (optional)
@@ -24,31 +24,28 @@ Hbuild使用`hbuild-cli`命令行工具，全局注册后可快速生成项目�
 - eslint
 - Support for building multi-page applications
 - offline mode support
-- [file hash](https://github.com/hawx1993/hbuild/blob/master/docs/ChangeLog.md)
+- [file hash](https://github.com/hawx1993/hbuild/blob/master/docs/filehash.md)
 
-其中[zepto](https://github.com/hawx1993/hbuild/blob/master/docs/zepto.md)是默认全局引入的，可直接使用。h5项目可以选择`ejs，mustache`或`art-template`模板引擎。 默认支持Babel转码。支持HMR。支持[文件指纹](https://github.com/hawx1993/hbuild/blob/master/docs/ChangeLog.md)。
+其中[zepto](https://github.com/hawx1993/hbuild/blob/master/docs/zepto.md)是默认全局引入的，可直接使用。h5项目可以选择`ejs，mustache`或`art-template`模板引擎。 默认支持Babel转码。支持HMR。支持[文件指纹](https://github.com/hawx1993/hbuild/blob/master/docs/filehash.md)。
 
-vue项目默认支持vue-router，react项目默认支持react-router
-    
-    
+vue项目默认支持`vue-router`，react项目默认支持`react-router`，暂不支持直接通过命令行选择`react-redux`，可直接自行通过npm包安装，可以正常编译
+
+
 ### Get Started
-    
-    
+
+
 You'd better have node >=6 and npm >=3 and gulp >=3.9 installed:
-    
+
 ```bash
 $ npm install -g hbuild-cli
 $ h init new-project
- 
+
 # edit files and start developing
-$ npm run dev
+$ npm start
 # bundle all scripts and styles for production use
-$ npm run prod
- 
-# lint your js code
-$ npm run eslint
+$ npm run build
 ```
-    
+
 
 ### Local Templates
 
@@ -61,13 +58,12 @@ $ h init ./hbuild new-project
 ### 命令
 
 ```
-$ npm run dev;//本地开发模式，连接mock数据
+$ npm run start;//本地开发模式，连接mock数据
 $ npm run dev-daily;//本地开发模式，连接daily日常环境数据
 $ npm run dev-pre;//本地开发模式，连接预发环境数据
 $ npm run daily;//线上日常构建模式，连接daily日常环境数据
 $ npm run pre;//线上预发构建模式，连接预发环境数据
-$ npm run prod;//线上构建模式，连接线上环境数据
-$ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
+$ npm run build;//线上构建模式，连接线上环境数据
 ```
 
 ### 编译
@@ -83,6 +79,8 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 5.开发模式不对代码进行压缩，sourceMap 只针对非开发模式有效(not dev)
 
 6.支持图片压缩
+
+7.支持生产环境拷贝mock数据至编译目录
 
 ### HTML和模板引擎
 
@@ -110,7 +108,7 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 
 ### 代码检查
 
-1.`npm run eslint` 支持vue单文件组件，支持es6语法检查
+1.当你执行`git commit`的时候，会自动触发执行eslint，支持vue和react单文件组件，支持es6语法检查
 
 ### 其他
 
@@ -140,7 +138,7 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 ├── mock                        # mock数据目录，保持和接口一样的路径即可
 │   └── h5
 ├── package.json    
-├── src                         # 源文件 
+├── src                         # 源文件
 │   ├── assets                  # 静态资源目录，存放图片或字体
 │   │   └── logo.ico
 │   ├── common                  # 共用代码目录，css目录存放公用css部分，js同理
@@ -162,7 +160,7 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 │   │   │   └── router.js
 │   │   └── store               # vuex store模块
 │   │       └── store.js
-│   ├── lib                     # 第三方库 
+│   ├── lib                     # 第三方库
 │   └── pages                   # 页面    
 │       └── index               # 首页目录，可在pages目录下新建多个目录结构，作为多入口文件
 │           ├── index.html
@@ -179,8 +177,8 @@ $ npm run eslint;//js代码审查，默认检查除lib文件夹下的js代码
 
 ### ChangeLog
 
-[changelog](https://github.com/hawx1993/hbuild/blob/master/docs/ChangeLog.md)
+[view changelog](https://github.com/hawx1993/hbuild/blob/master/docs/ChangeLog.md)
 
 ### License
-    
+
 MIT © [hawx1993](https://github.com/hawx1993)
