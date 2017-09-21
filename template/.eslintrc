@@ -1,7 +1,7 @@
 {
     "parser": "babel-eslint",{{#if_eq project 'vue'}}
-    "plugins": ["vue"],{{/if_eq}} {{#if_eq project 'react'}}
-    "plugins": ["react"],{{/if_eq}}
+    "plugins": ["vue","babel"],{{/if_eq}} {{#if_eq project 'react'}}
+    "plugins": ["react","babel"],{{/if_eq}}
     "env": {
         "browser": true,
         "node": true,

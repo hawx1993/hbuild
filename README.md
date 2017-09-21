@@ -9,6 +9,10 @@
 
 Hbuild使用[hbuild-cli](https://github.com/hawx1993/hbuild-cli)命令行工具，全局注册后可快速生成项目启动套件。你可以使用Hbuild生成一个h5项目，或者vue项目（默认搭配react-router，可自由选择vuex），或者react项目。该套件包含如下特点：
 
+<a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/gWs9P5H4YpntyAR6x1qG5EkX/hawx1993/hbuild'>
+  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/gWs9P5H4YpntyAR6x1qG5EkX/hawx1993/hbuild.svg' />
+</a>
+
 ### Features
 
 - Vue2 / Vue-Router / Vuex (optional)
@@ -105,6 +109,7 @@ $ npm run build;//线上构建模式，连接线上环境数据
 4.支持 屏幕适配方案，采用`media-query+rem`的方式，默认在`common.less`文件中
 
 5.支持postcss和`autoprefixer`
+
 
 ### 代码检查
 

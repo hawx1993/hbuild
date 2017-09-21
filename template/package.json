@@ -40,7 +40,7 @@
         "vuex": "^2.3.1",{{/vuex}}{{#if_eq project 'react'}}
         "react": "^15.5.4",
         "react-dom": "^15.5.4",{{/if_eq}}
-        "webpack": "^2.5.1"
+        "webpack": "^2.7.0"
     },
     "devDependencies": {
         "autoprefixer": "^7.0.1",
@@ -56,7 +56,6 @@
         "ejs-template-loader": "^2.0.0",{{/if_eq}}
         "eslint": "^4.6.1",
         "eslint-plugin-babel": "^4.1.2",{{#if_eq project 'react'}}
-        "eslint-plugin-jsx-a11y": "^6.0.2",
         "eslint-plugin-react": "^7.3.0",{{/if_eq}}{{#if_eq project 'vue'}}
         "eslint-plugin-vue": "^2.0.1",{{/if_eq}}
         "extract-text-webpack-plugin": "^2.1.0",
