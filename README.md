@@ -1,10 +1,6 @@
 
 ### <p align='center'>About Hbuild</p>
 
-<p align="center">
-  <img src="http://chuantu.biz/t5/92/1495463272x1822614086.png" alt="vuepack" width="60">
-  <br><br><strong>Hbuild</strong> is a modern project starter kit<br>which  allows you to build your own project by cli rapidly
-</p>
 
 
 Hbuild使用[hbuild-cli](https://github.com/hawx1993/hbuild-cli)命令行工具，全局注册后可快速生成项目启动套件。你可以使用Hbuild生成一个h5项目，或者vue项目（默认搭配react-router，可自由选择vuex），或者react项目。该套件包含如下特点：
