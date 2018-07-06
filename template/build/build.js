@@ -43,13 +43,9 @@ task("html", ()=> {
     let stream = function (options) {
         return input(resolve('src','pages','/*/+([^\.]).html'))
             .pipe(cache(ejs()))
-            .pipe(replace(/\$\$_CDNPATH_\$\$/g, resolve('staticPath',hash)))
-            .pipe(replace(/\$\$_STATICPATH_\$\$/g,resolve('staticPath',hash,'buildAssets')))
+            .pipe(replace(/\$\$_CDNPATH_\$\$/g, resolve('../../','staticPath',hash)))
+            .pipe(replace(/\$\$_STATICPATH_\$\$/g,resolve('../../','staticPath',hash,'buildAssets')))
             .pipe(options)
-            .pipe(cache(rename(function(path) {
-                path.basename = path.dirname;
-                path.dirname = "";
-            })))
             .pipe(output(resolve('buildPath','pages')));
     }
     if (args.dev) {
